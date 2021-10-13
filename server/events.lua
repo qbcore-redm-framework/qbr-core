@@ -3,7 +3,7 @@ AddEventHandler('playerDropped', function()
 	local src = source
 	if QBCore.Players[src] then
 		local Player = QBCore.Players[src]
-		TriggerEvent('qb-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**'.. GetPlayerName(src) .. '** ('..Player.PlayerData.license..') left..')
+		TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**'.. GetPlayerName(src) .. '** ('..Player.PlayerData.license..') left..')
 		Player.Functions.Save()
 		QBCore.Players[src] = nil
 	end
@@ -217,7 +217,7 @@ RegisterNetEvent('QBCore:Player:RemoveXp', function(source, skill, amount) -- re
 end)
 
 
--- Non-Chat Command Calling (ex: qb-adminmenu)
+-- Non-Chat Command Calling (ex: qbr-adminmenu)
 RegisterNetEvent('QBCore:CallCommand', function(command, args)
 	local src = source
 	if QBCore.Commands.List[command] then

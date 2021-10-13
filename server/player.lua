@@ -251,9 +251,9 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] + amount
 			self.Functions.UpdatePlayerData()
 			if amount > 100000 then
-				TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'AddMoney', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') added, new '..moneytype..' balance: '..self.PlayerData.money[moneytype], true)
+				TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'AddMoney', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') added, new '..moneytype..' balance: '..self.PlayerData.money[moneytype], true)
 			else
-				TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'AddMoney', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') added, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
+				TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'AddMoney', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') added, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
 			end
 			TriggerClientEvent('hud:client:OnMoneyChange', self.PlayerData.source, moneytype, amount, false)
 			return true
@@ -275,9 +275,9 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
 			self.Functions.UpdatePlayerData()
 			if amount > 100000 then
-				TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'RemoveMoney', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') removed, new '..moneytype..' balance: '..self.PlayerData.money[moneytype], true)
+				TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'RemoveMoney', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') removed, new '..moneytype..' balance: '..self.PlayerData.money[moneytype], true)
 			else
-				TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'RemoveMoney', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') removed, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
+				TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'RemoveMoney', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') removed, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
 			end
 			TriggerClientEvent('hud:client:OnMoneyChange', self.PlayerData.source, moneytype, amount, true)
 			return true
@@ -293,7 +293,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
 		if self.PlayerData.money[moneytype] then
 			self.PlayerData.money[moneytype] = amount
 			self.Functions.UpdatePlayerData()
-			TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'SetMoney', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') set, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
+			TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'SetMoney', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** $'..amount .. ' ('..moneytype..') set, new '..moneytype..' balance: '..self.PlayerData.money[moneytype])
 			return true
 		end
 		return false
@@ -314,7 +314,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			self.PlayerData.metadata['xp'][skill] = self.PlayerData.metadata['xp'][skill] + amount
 			self.Functions.UpdateLevelData(skill)
 			self.Functions.UpdatePlayerData()
-			TriggerEvent('qb-log:server:CreateLog', 'levels', 'AddXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
+			TriggerEvent('qbr-log:server:CreateLog', 'levels', 'AddXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
 			return true
 		end
 		return false
@@ -327,7 +327,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			self.PlayerData.metadata['xp'][skill] = self.PlayerData.metadata['xp'][skill] - amount
 			self.Functions.UpdateLevelData(skill)
 			self.Functions.UpdatePlayerData()
-			TriggerEvent('qb-log:server:CreateLog', 'levels', 'RemoveXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** was stripped of: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
+			TriggerEvent('qbr-log:server:CreateLog', 'levels', 'RemoveXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** was stripped of: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
 			return true
 		end
 		return false
@@ -348,19 +348,19 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			if (slot and self.PlayerData.items[slot]) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo['type'] == 'item' and not itemInfo['unique']) then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
 				self.Functions.UpdatePlayerData()
-				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
+				TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
 				return true
 			elseif (not itemInfo['unique'] and slot and self.PlayerData.items[slot] == nil) then
 				self.PlayerData.items[slot] = {name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = slot, combinable = itemInfo['combinable']}
 				self.Functions.UpdatePlayerData()
-				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
+				TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
 				return true
 			elseif (itemInfo['unique']) or (not slot or slot == nil) or (itemInfo['type'] == 'weapon') then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
 						self.PlayerData.items[i] = {name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = i, combinable = itemInfo['combinable']}
 						self.Functions.UpdatePlayerData()
-						TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..i..'], itemname: ' .. self.PlayerData.items[i].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[i].amount)
+						TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** got item: [slot:' ..i..'], itemname: ' .. self.PlayerData.items[i].name .. ', added amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[i].amount)
 						return true
 					end
 				end
@@ -378,12 +378,12 @@ function QBCore.Player.CreatePlayer(PlayerData)
 			if self.PlayerData.items[slot].amount > amount then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amount
 				self.Functions.UpdatePlayerData()
-				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
+				TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
 				return true
 			else
 				self.PlayerData.items[slot] = nil
 				self.Functions.UpdatePlayerData()
-				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. item .. ', removed amount: ' .. amount ..', item removed')
+				TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. item .. ', removed amount: ' .. amount ..', item removed')
 				return true
 			end
 		else
@@ -394,12 +394,12 @@ function QBCore.Player.CreatePlayer(PlayerData)
 					if self.PlayerData.items[slot].amount > amountToRemove then
 						self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amountToRemove
 						self.Functions.UpdatePlayerData()
-						TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
+						TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount ..', new total amount: '.. self.PlayerData.items[slot].amount)
 						return true
 					elseif self.PlayerData.items[slot].amount == amountToRemove then
 						self.PlayerData.items[slot] = nil
 						self.Functions.UpdatePlayerData()
-						TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. item .. ', removed amount: ' .. amount ..', item removed')
+						TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** lost item: [slot:' ..slot..'], itemname: ' .. item .. ', removed amount: ' .. amount ..', item removed')
 						return true
 					end
 				end
@@ -411,13 +411,13 @@ function QBCore.Player.CreatePlayer(PlayerData)
 	self.Functions.SetInventory = function(items, dontUpdateChat)
 		self.PlayerData.items = items
 		self.Functions.UpdatePlayerData(dontUpdateChat)
-		TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'SetInventory', 'blue', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** items set: ' .. json.encode(items))
+		TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'SetInventory', 'blue', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** items set: ' .. json.encode(items))
 	end
 
 	self.Functions.ClearInventory = function()
 		self.PlayerData.items = {}
 		self.Functions.UpdatePlayerData()
-		TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'ClearInventory', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** inventory cleared')
+		TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'ClearInventory', 'red', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** inventory cleared')
 	end
 
 	self.Functions.GetItemByName = function(item)
@@ -525,10 +525,10 @@ function QBCore.Player.DeleteCharacter(source, citizenid)
 		for k,v in pairs(playertables) do
 			exports.oxmysql:execute('DELETE FROM '..v.table..' WHERE citizenid = ?', { citizenid })
 		end
-		TriggerEvent('qb-log:server:CreateLog', 'joinleave', 'Character Deleted', 'red', '**'.. GetPlayerName(source) .. '** ('..license..') deleted **'..citizenid..'**..')
+		TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Character Deleted', 'red', '**'.. GetPlayerName(source) .. '** ('..license..') deleted **'..citizenid..'**..')
 	else
 		DropPlayer(source, 'You Have Been Kicked For Exploitation')
-		TriggerEvent('qb-log:server:CreateLog', 'anticheat', 'Anti-Cheat', 'white', GetPlayerName(source)..' Has Been Dropped For Character Deletion Exploit', false)
+		TriggerEvent('qbr-log:server:CreateLog', 'anticheat', 'Anti-Cheat', 'white', GetPlayerName(source)..' Has Been Dropped For Character Deletion Exploit', false)
 	end
 end
 
@@ -659,7 +659,7 @@ function QBCore.Player.CreateWalletId()
 	local UniqueFound = false
 	local WalletId = nil
 	while not UniqueFound do
-		WalletId = 'QB-'..math.random(11111111, 99999999)
+		WalletId = 'QBR-'..math.random(11111111, 99999999)
 		local query = '%'..WalletId..'%'
 		local result = exports.oxmysql:fetchSync('SELECT COUNT(*) as count FROM players WHERE metadata LIKE ?', { query })
 		if result[1].count == 0 then

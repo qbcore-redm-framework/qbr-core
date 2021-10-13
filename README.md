@@ -1,2 +1,2 @@
-# qb-core
+# qbr-core
 RedM Core
