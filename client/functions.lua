@@ -29,12 +29,6 @@ end
 
 
 -- Utility Functions
-function QBCore.Functions.Notify(text, textype, length)
-    local ttype = textype or 'primary'
-    local length = length or 5000
-    SendNUIMessage({action = 'show', type = ttype, length = length, text = text})
-end
-
 function QBCore.Debug(resource, obj, depth)
 	TriggerServerEvent('QBCore:DebugSomething', resource, obj, depth)
 end
@@ -402,3 +396,51 @@ function QBCore.Functions.SetVehicleProperties(vehicle, props)
 		end
 	end
 end
+
+
+-- Notification Function
+function QBCore.Functions.Notify(id, text, duration, subtext, dict, icon, color)
+	display = text or 'Placeholder'
+	subdisplay = subtext or 'Placeholder'
+	lenght = duration or 4000
+	dictionary = dict or "generic_textures"
+	image = icon or "tick"
+	colour = color or "COLOR_WHITE"
+
+	local type = notifications[id]
+	if type then
+		type()
+	else
+		print("This ID doesn\'t match any notification type.")
+	end
+end
+
+notifications = {
+	[1] = function()
+		TriggerEvent('Notification:Tip', display, lenght)
+	end,
+	[2] = function()
+		TriggerEvent('Notification:RightText', display, lenght)
+	end,
+	[3] = function()
+		TriggerEvent('Notification:ShowObjective', display, lenght)
+	end,
+	[4] = function()
+		TriggerEvent('Notification:ShowBasicTopNotification', display, lenght)
+	end,
+	[5] = function()
+		TriggerEvent('Notification:ShowSimpleCenterText', display, lenght)
+	end,
+	[6] = function()
+		TriggerEvent('Notification:ShowLocationNotification', display, subdisplay, lenght)
+	end,
+	[7] = function()
+		TriggerEvent('Notification:ShowTopNotification', display, subdisplay, lenght)
+	end,
+	[8] = function()
+		TriggerEvent('Notification:ShowAdvancedLeftNotification', display, subdisplay, dictionary, image, lenght)
+	end,
+	[9] = function()
+		TriggerEvent('Notification:ShowAdvancedRightNotification', display, dictionary, image, colour, lenght)
+	end
+}
