@@ -509,7 +509,7 @@ end
 -- Delete character
 local playertables = { -- Add tables as needed
     {table = 'players'},
-    {table = 'apartments'},
+    {table = 'motels'},
     {table = 'bank_accounts'},
     {table = 'playerskins'},
     {table = 'player_boats'},
