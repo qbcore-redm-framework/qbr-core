@@ -36,7 +36,7 @@ files {
 
 dependencies {
 	'progressbar',
-	'connectqueue'
+	'rocademption'
 }
 
 lua54 'yes'
