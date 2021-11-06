@@ -512,8 +512,6 @@ local playertables = { -- Add tables as needed
     {table = 'apartments'},
     {table = 'bank_accounts'},
     {table = 'playerskins'},
-    {table = 'player_boats'},
-    {table = 'player_houses'},
     {table = 'player_outfits'},
     {table = 'player_vehicles'}
 }
