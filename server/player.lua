@@ -230,7 +230,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
 
 	self.Functions.SetMetaData = function(meta, val)
 		local meta = meta:lower()
-		if val then
+		if val ~= nil then
 			self.PlayerData.metadata[meta] = val
 			self.Functions.UpdatePlayerData()
 		end
