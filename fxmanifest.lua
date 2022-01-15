@@ -6,8 +6,15 @@ description 'qbr-core'
 version '1.0.0'
 
 shared_scripts {
+	'shared/locale.lua',
+	'locale/nl.lua', -- replace with desired language
 	'config.lua',
-	'shared.lua'
+	'shared/main.lua',
+	'shared/items.lua',
+	'shared/jobs.lua',
+	'shared/vehicles.lua',
+	'shared/gangs.lua',
+	'shared/weapons.lua'
 }
 
 client_scripts {
@@ -18,6 +25,7 @@ client_scripts {
 }
 
 server_scripts {
+	'@oxmysql/lib/MySQL.lua',
 	'server/main.lua',
 	'server/functions.lua',
 	'server/player.lua',
@@ -26,15 +34,16 @@ server_scripts {
 	'server/debug.lua'
 }
 
-ui_page 'html/ui.html'
+ui_page 'html/index.html'
 
 files {
-	'html/ui.html',
-	'html/css/main.css',
-	'html/js/app.js'
+	'html/index.html',
+	'html/style.css',
+	'html/*.js'
 }
 
 dependencies {
+	'oxmysql',
 	'progressbar',
 	'connectqueue'
 }

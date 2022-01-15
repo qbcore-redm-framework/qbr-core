@@ -4,8 +4,10 @@
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     ShutdownLoadingScreenNui()
     LocalPlayer.state:set('isLoggedIn', true, false)
-    NetworkSetFriendlyFireOption(true)
-    if QBCore.Config.Player.RevealMap then
+    if QBConfig.Server.pvp then
+        NetworkSetFriendlyFireOption(true)
+    end
+    if QBConfig.Player.RevealMap then
 		SetMinimapHideFow(true)
 	end
 end)
@@ -14,6 +16,9 @@ RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     LocalPlayer.state:set('isLoggedIn', false, false)
 end)
 
+RegisterNetEvent('QBCore:Client:PvpHasToggled', function(pvp_state)
+    NetworkSetFriendlyFireOption(pvp_state)
+end)
 
 -- QBCore Teleport Events
 RegisterNetEvent('QBCore:Command:TeleportToPlayer', function(coords)
@@ -41,27 +46,30 @@ RegisterNetEvent('QBCore:Command:DeleteVehicle', function()
 	QBCore.Functions.DeleteVehicle(vehicle)
 end)
 
-
 -- Other stuff
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
-	QBCore.PlayerData = val
+    QBCore.PlayerData = val
 end)
 
 RegisterNetEvent('QBCore:Player:UpdatePlayerData', function()
-	TriggerServerEvent('QBCore:UpdatePlayer')
+    TriggerServerEvent('QBCore:UpdatePlayer')
 end)
 
 RegisterNetEvent('QBCore:Notify', function(text, type, length)
-	QBCore.Functions.Notify(text, type, length)
+    QBCore.Functions.Notify(text, type, length)
+end)
+
+RegisterNetEvent('QBCore:Notification', function(id, text, duration, subtext, dict, icon, color)
+    QBCore.Functions.Notification(id, text, duration, subtext, dict, icon, color)
 end)
 
 RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
-	if QBCore.ServerCallbacks[name] ~= nil then
-		QBCore.ServerCallbacks[name](...)
-		QBCore.ServerCallbacks[name] = nil
-	end
+    if QBCore.ServerCallbacks[name] then
+        QBCore.ServerCallbacks[name](...)
+        QBCore.ServerCallbacks[name] = nil
+    end
 end)
 
 RegisterNetEvent('QBCore:Client:UseItem', function(item)
-	TriggerServerEvent("QBCore:Server:UseItem", item)
+    TriggerServerEvent('QBCore:Server:UseItem', item)
 end)
