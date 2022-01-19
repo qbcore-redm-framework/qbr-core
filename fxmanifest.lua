@@ -7,7 +7,7 @@ version '1.0.0'
 
 shared_scripts {
 	'shared/locale.lua',
-	'locale/nl.lua', -- replace with desired language
+	'locale/en.lua', -- replace with desired language
 	'config.lua',
 	'shared/main.lua',
 	'shared/items.lua',
