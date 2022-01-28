@@ -262,7 +262,7 @@ QBCore.Commands.Add('ooc', 'OOC Chat Message', {}, false, function(source, args)
                     multiline = true,
                     args = {'Proxmity OOC | '.. GetPlayerName(src), message}
                 })
-                TriggerEvent('qb-log:server:CreateLog', 'ooc', 'OOC', 'white', '**' .. GetPlayerName(src) .. '** (CitizenID: ' .. Player.PlayerData.citizenid .. ' | ID: ' .. src .. ') **Message:** ' .. message, false)
+                TriggerEvent('qbr-log:server:CreateLog', 'ooc', 'OOC', 'white', '**' .. GetPlayerName(src) .. '** (CitizenID: ' .. Player.PlayerData.citizenid .. ' | ID: ' .. src .. ') **Message:** ' .. message, false)
             end
         end
     end
