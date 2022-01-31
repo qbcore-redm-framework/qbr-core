@@ -68,6 +68,11 @@ QBCore.Commands.Add('tp', 'TP To Player or Coords (Admin Only)', { { name = 'id/
     end
 end, 'admin')
 
+QBCore.Commands.Add('tpm', 'TP To Marker (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('QBCore:Command:GoToMarker', src)
+end, 'admin')
+
 QBCore.Commands.Add('togglepvp', 'Toggle PVP on the server (Admin Only)', {}, false, function(source)
     local src = source
     local pvp_state = QBConfig.Server.pvp
