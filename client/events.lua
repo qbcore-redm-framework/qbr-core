@@ -31,6 +31,21 @@ RegisterNetEvent('QBCore:Command:TeleportToCoords', function(x, y, z)
     SetEntityCoords(ped, x, y, z)
 end)
 
+RegisterNetEvent('QBCore:Command:GoToMarker', function()
+    local ped = PlayerPedId()
+    if DoesEntityExist(ped) then
+        local blipCoords = GetWaypointCoords()
+        for height = 1, 1000 do
+			SetEntityCoords(ped, blipCoords.x, blipCoords.y, height + 0.0)
+            local foundGround, zPos = GetGroundZAndNormalFor_3dCoord(blipCoords.x, blipCoords.y, height + 0.0)
+            if foundGround then
+                SetEntityCoords(ped, blipCoords.x, blipCoords.y, height + 0.0)
+                break
+            end
+            Wait(0)
+        end
+    end
+end)
 
 -- Vehicle | Horse Events
 RegisterNetEvent('QBCore:Command:SpawnVehicle', function(model)
