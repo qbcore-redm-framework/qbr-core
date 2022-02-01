@@ -818,3 +818,12 @@ function QBCore.Functions.DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col
 	Citizen.InvokeNative(0xADA9255D, 10);
 	DisplayText(str, x, y)
 end
+
+function QBCore.Functions.DrawText(text,x,y)
+    SetTextScale(0.35,0.35)
+    SetTextColor(255,255,255,255)--r,g,b,a
+    SetTextCentre(true)--true,false
+    SetTextDropshadow(1,0,0,0,200)--distance,r,g,b,a
+    SetTextFontForCurrentCommand(0)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", text), x, y)
+end
