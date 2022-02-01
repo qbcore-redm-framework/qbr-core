@@ -15,8 +15,11 @@ QBShared.Items = {
 	['painkillers'] 			= {['name'] = 'painkillers', 			['label'] = 'painkillers', 					['weight'] = 0, 		['type'] = 'item', 				['image'] = 'painkillers.png', 				['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,      ['description'] = 'painkillers.'},
 	['firstaid'] 				= {['name'] = 'firstaid', 				['label'] = 'firstaid', 					['weight'] = 0, 		['type'] = 'item', 				['image'] = 'firstaid.png', 				['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,      ['description'] = 'firstaid.'},
 	['cannedbeans'] 			= {['name'] = 'cannedbeans', 			['label'] = 'Beans in a can',				['weight'] = 100,		['type'] = 'item', 				['image'] = 'cannedbeans.png',				['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Canned beans, not something somebody would want to eat willingly. Atleast I can now make a bean joke about it'},		
-	
-	--AMMO
+	['coins1'] 			        = {['name'] = 'coins1', 			    ['label'] = '1 coins',				        ['weight'] = 100,		['type'] = 'item', 				['image'] = 'coins.png',				    ['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Coins'},
+	['coins5'] 			        = {['name'] = 'coins5', 			    ['label'] = '5 coins',				        ['weight'] = 100,		['type'] = 'item', 				['image'] = 'coins.png',				    ['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Coins'},
+	['coins10'] 		        = {['name'] = 'coins10', 			    ['label'] = '5 coins',				        ['weight'] = 100,		['type'] = 'item', 				['image'] = 'coins.png',				    ['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Coins'},
+
+    --AMMO
 	
 	['ammo_repeater'] 			= {['name'] = 'ammo_repeater', 			['label'] = 'Ammo Repeater', 				['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Repeater Ammo'},
 	['ammo_revolver'] 			= {['name'] = 'ammo_revolver', 			['label'] = 'Ammo Revolver', 				['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Revolver Ammo'},
