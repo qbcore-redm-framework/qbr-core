@@ -73,11 +73,11 @@ RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
             return
         end
         QBCore.Functions.LoadModel(animalHash)
-		local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 4.0, 0.5))
+		local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 4.0, 0.5))
         npc = CreatePed(animalHash, x, y, z, GetEntityHeading(ped)+90, 1, 0)
         Citizen.InvokeNative(0x283978A15512B2FE, npc, true)
-        Citizen.InvokeNative(0x25ACFC650B65C538,npc,_num3)
-		while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C,npc) do
+        Citizen.InvokeNative(0x25ACFC650B65C538,npc, num)
+		while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, npc) do
 			Wait(0)
 		end
 		Citizen.InvokeNative(0x704C908E9C405136, npc)
