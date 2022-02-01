@@ -827,3 +827,13 @@ function QBCore.Functions.DrawText(text,x,y)
     SetTextFontForCurrentCommand(0)
     DisplayText(CreateVarString(10, "LITERAL_STRING", text), x, y)
 end
+
+function QBCore.Functions.DrawText3Ds(x, y, z, text)
+    local onScreen,_x,_y=GetScreenCoordFromWorldCoord(x, y, z)
+    SetTextScale(0.35, 0.35)
+    SetTextFontForCurrentCommand(1)
+    SetTextColor(255, 255, 255, 215)
+    local str = CreateVarString(10, "LITERAL_STRING", text, Citizen.ResultAsLong())
+    SetTextCentre(1)
+    DisplayText(str,_x,_y)
+end
