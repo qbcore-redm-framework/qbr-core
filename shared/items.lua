@@ -15,7 +15,12 @@ QBShared.Items = {
 	['painkillers'] 			= {['name'] = 'painkillers', 			['label'] = 'painkillers', 					['weight'] = 0, 		['type'] = 'item', 				['image'] = 'painkillers.png', 				['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,      ['description'] = 'painkillers.'},
 	['firstaid'] 				= {['name'] = 'firstaid', 				['label'] = 'firstaid', 					['weight'] = 0, 		['type'] = 'item', 				['image'] = 'firstaid.png', 				['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,      ['description'] = 'firstaid.'},
 	['cannedbeans'] 			= {['name'] = 'cannedbeans', 			['label'] = 'Beans in a can',				['weight'] = 100,		['type'] = 'item', 				['image'] = 'cannedbeans.png',				['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Canned beans, not something somebody would want to eat willingly. Atleast I can now make a bean joke about it'},		
+	['metalscrap'] 				= {['name'] = 'metalscrap', 			['label'] = 'Metalscrap',					['weight'] = 100,		['type'] = 'item', 				['image'] = 'metalscrap.png',				['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Placeholder'},		
+	['plastic'] 				= {['name'] = 'plastic', 				['label'] = 'Plastic',						['weight'] = 100,		['type'] = 'item', 				['image'] = 'plastic.png',					['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Placeholder'},		
+	['lockpick'] 				= {['name'] = 'lockpick', 				['label'] = 'Lockpick',						['weight'] = 100,		['type'] = 'item', 				['image'] = 'lockpick.png',					['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Placeholder'},		
+	['coffeeseeds'] 			= {['name'] = 'coffeeseeds', 			['label'] = 'Coffeeseeds',					['weight'] = 100,		['type'] = 'item', 				['image'] = 'seed_weed.png',				['unique'] = false,		['useable'] = true,		['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0,		['description'] = 'Placeholder'},		
 	
+    
 	--AMMO
 	
 	['ammo_repeater'] 			= {['name'] = 'ammo_repeater', 			['label'] = 'Ammo Repeater', 				['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Repeater Ammo'},
