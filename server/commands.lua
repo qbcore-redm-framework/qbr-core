@@ -115,6 +115,11 @@ QBCore.Commands.Add('dv', 'Delete Vehicle (Admin Only)', {}, false, function(sou
     TriggerClientEvent('QBCore:Command:DeleteVehicle', src)
 end, 'admin')
 
+QBCore.Commands.Add('horse', 'Spawn Horse (Admin Only)', { { name = 'model', help = 'Model name of the horse' } }, true, function(source, args)
+    local src = source
+    TriggerClientEvent('QBCore:Command:SpawnHorse', src, args[1])
+end, 'admin')
+
 -- Money
 
 QBCore.Commands.Add('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, crypto)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
