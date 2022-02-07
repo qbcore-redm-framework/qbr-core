@@ -120,6 +120,11 @@ QBCore.Commands.Add('horse', 'Spawn Horse (Admin Only)', { { name = 'model', hel
     TriggerClientEvent('QBCore:Command:SpawnHorse', src, args[1])
 end, 'admin')
 
+QBCore.Commands.Add('coords', 'Get your current coords (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('QBCore:Command:GetCoords', src)
+end, 'admin')
+
 -- Money
 
 QBCore.Commands.Add('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, crypto)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
