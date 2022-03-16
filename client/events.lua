@@ -64,7 +64,7 @@ end)
 RegisterNetEvent('QBCore:Command:GetCoords', function()
     local ped = PlayerPedId()
     local pos = GetEntityCoords(ped, false)
-    local heading = GetEntityHeading(ped)    
+    local heading = GetEntityHeading(ped)
     AddTextEntry("FMMC_KEY_TIP12", "Coords")
     DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP12", "", vector4(pos.x, pos.y, pos.z, heading), "", "", "", 150)
 end)
@@ -105,14 +105,6 @@ RegisterNetEvent('QBCore:Player:UpdatePlayerData', function()
     TriggerServerEvent('QBCore:UpdatePlayer')
 end)
 
-RegisterNetEvent('QBCore:Notify', function(text, type, length)
-    QBCore.Functions.Notify(text, type, length)
-end)
-
-RegisterNetEvent('QBCore:Notification', function(id, text, duration, subtext, dict, icon, color)
-    QBCore.Functions.Notification(id, text, duration, subtext, dict, icon, color)
-end)
-
 RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
     if QBCore.ServerCallbacks[name] then
         QBCore.ServerCallbacks[name](...)
@@ -122,4 +114,104 @@ end)
 
 RegisterNetEvent('QBCore:Client:UseItem', function(item)
     TriggerServerEvent('QBCore:Server:UseItem', item)
+end)
+
+-- Notification Events
+
+RegisterNetEvent('QBCore:Notify', function(id, text, duration, subtext, dict, icon, color)
+    QBCore.Functions.Notification(id, text, duration, subtext, dict, icon, color)
+end)
+
+RegisterNetEvent('QBCore:Notify:Tip', function(text, duration)
+    SendNUIMessage({
+        type = 'Tip',
+        text = tostring(text),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:RightText', function(text, duration)
+    SendNUIMessage({
+        type = 'RightText',
+        text = tostring(text),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowObjective', function(text, duration)
+    SendNUIMessage({
+        type = 'ShowObjective',
+        text = tostring(text),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowBasicTopNotification', function(text, duration)
+    SendNUIMessage({
+        type = 'ShowBasicTopNotification',
+        text = tostring(text),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowSimpleCenterText', function(text, duration)
+    SendNUIMessage({
+        type = 'ShowSimpleCenterText',
+        text = tostring(text),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowLocationNotification', function(text, location, duration)
+    SendNUIMessage({
+        type = 'ShowLocationNotification',
+        text = tostring(text),
+        location = tostring(location),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowTopNotification', function(tittle, subtitle, duration)
+    SendNUIMessage({
+        type = 'ShowTopNotification',
+        title = tostring(tittle),
+        subtitle = tostring(subtitle),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowAdvancedLeftNotification', function(firsttext, secondtext, dict, icon, duration)
+    local _dict = dict
+    local _icon = icon
+    if not LoadTexture(_dict) then
+        _dict = "generic_textures"
+        LoadTexture(_dict)
+        _icon = "tick"
+    end
+    SendNUIMessage({
+        type = 'ShowAdvancedLeftNotification',
+        text = tostring(firsttext),
+        secondtext = tostring(secondtext),
+        dict = tostring(_dict),
+        icon = tostring(_icon),
+        duration = tonumber(duration)
+    })
+end)
+
+RegisterNetEvent('QBCore:Notify:ShowAdvancedRightNotification', function(text, dict, icon, text_color, duration)
+    local _dict = dict
+    local _icon = icon
+    if not LoadTexture(_dict) then
+        _dict = "generic_textures"
+        LoadTexture(_dict)
+        _icon = "tick"
+    end
+    SendNUIMessage({
+        type = 'ShowAdvancedRightNotification',
+        text = tostring(text),
+        dict = tostring(_dict),
+        icon = tostring(_icon),
+        color = tostring(text_color),
+        duration = tonumber(duration)
+    })
 end)

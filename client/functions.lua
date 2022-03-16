@@ -77,6 +77,18 @@ function QBCore.Functions.Progressbar(name, label, duration, useWhileDead, canCa
     end)
 end
 
+function LoadTexture(dict)
+    if Citizen.InvokeNative(0x7332461FC59EB7EC, dict) then
+        RequestStreamedTextureDict(dict, true)
+        while not HasStreamedTextureDictLoaded(dict) do
+            Wait(1)
+        end
+        return true
+    else
+        return false
+    end
+end
+
 -- Getters
 
 function QBCore.Functions.GetVehicles()
@@ -735,78 +747,49 @@ end
 -- Notification Function
 
 function QBCore.Functions.Notification(id, text, duration, subtext, dict, icon, color)
-	display = text or 'Placeholder'
-	subdisplay = subtext or 'Placeholder'
-	lenght = duration or 4000
-	dictionary = dict or "generic_textures"
-	image = icon or "tick"
-	colour = color or "COLOR_WHITE"
-    
+	local display = text or 'Placeholder'
+	local subdisplay = subtext or 'Placeholder'
+	local length = duration or 4000
+	local dictionary = dict or "generic_textures"
+	local image = icon or "tick"
+	local colour = color or "COLOR_WHITE"
+
     local notifications = {
         [1] = function()
-            TriggerEvent('Notification:Tip', display, lenght)
+            TriggerEvent('QBCore:Notify:Tip', display, length)
         end,
         [2] = function()
-            TriggerEvent('Notification:RightText', display, lenght)
+            TriggerEvent('QBCore:Notify:RightText', display, length)
         end,
         [3] = function()
-            TriggerEvent('Notification:ShowObjective', display, lenght)
+            TriggerEvent('QBCore:Notify:ShowObjective', display, length)
         end,
         [4] = function()
-            TriggerEvent('Notification:ShowBasicTopNotification', display, lenght)
+            TriggerEvent('QBCore:Notify:ShowBasicTopNotification', display, length)
         end,
         [5] = function()
-            TriggerEvent('Notification:ShowSimpleCenterText', display, lenght)
+            TriggerEvent('QBCore:Notify:ShowSimpleCenterText', display, length)
         end,
         [6] = function()
-            TriggerEvent('Notification:ShowLocationNotification', display, subdisplay, lenght)
+            TriggerEvent('QBCore:Notify:ShowLocationNotification', display, subdisplay, length)
         end,
         [7] = function()
-            TriggerEvent('Notification:ShowTopNotification', display, subdisplay, lenght)
+            TriggerEvent('QBCore:Notify:ShowTopNotification', display, subdisplay, length)
         end,
         [8] = function()
-            TriggerEvent('Notification:ShowAdvancedLeftNotification', display, subdisplay, dictionary, image, lenght)
+            TriggerEvent('QBCore:Notify:ShowAdvancedLeftNotification', display, subdisplay, dictionary, image, length)
         end,
         [9] = function()
-            TriggerEvent('Notification:ShowAdvancedRightNotification', display, dictionary, image, colour, lenght)
+            TriggerEvent('QBCore:Notify:ShowAdvancedRightNotification', display, dictionary, image, colour, length)
         end
     }
-    
+
 	local type = notifications[id]
 	if type then
 		type()
 	else
 		print("This ID doesn\'t match any notification type.")
 	end
-end
-
-RegisterNUICallback('getNotifyConfig', function(_, cb)
-    cb(QBCore.Config.Notify)
-end)
-
-function QBCore.Functions.Notify(text, textype, length)
-    if type(text) == "table" then
-        local ttext = text.text or 'Placeholder'
-        local caption = text.caption or 'Placeholder'
-        local ttype = textype or 'primary'
-        local length = length or 5000
-        SendNUIMessage({
-            action = 'notify',
-            type = ttype,
-            length = length,
-            text = ttext,
-            caption = caption
-        })
-    else
-        local ttype = textype or 'primary'
-        local length = length or 5000
-        SendNUIMessage({
-            action = 'notify',
-            type = ttype,
-            length = length,
-            text = text
-        })
-    end
 end
 
 function QBCore.Functions.DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
