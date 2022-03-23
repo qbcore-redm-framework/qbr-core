@@ -176,7 +176,7 @@ function PaycheckLoop()
     for _, Player in pairs(Players) do
         local payment = Player.PlayerData.job.payment
         if Player.PlayerData.job and payment > 0 and (QBShared.Jobs[Player.PlayerData.job.name].offDutyPay or Player.PlayerData.job.onduty) then
-            if QBCore.Config.Money.PayCheckSociety then
+            if QBConfig.Money.PayCheckSociety then
                 local account = exports['qb-bossmenu']:GetAccount(Player.PlayerData.job.name)
                 if account ~= 0 then -- Checks if player is employed by a society
                     if account < payment then -- Checks if company has enough money to pay society
@@ -196,7 +196,7 @@ function PaycheckLoop()
             end
         end
     end
-    SetTimeout(QBCore.Config.Money.PayCheckTimeOut * (60 * 1000), PaycheckLoop)
+    SetTimeout(QBConfig.Money.PayCheckTimeOut * (60 * 1000), PaycheckLoop)
 end
 
 -- Callbacks
@@ -231,7 +231,7 @@ end
 
 function QBCore.Functions.Kick(source, reason, setKickReason, deferrals)
     local src = source
-    reason = '\n' .. reason .. '\n🔸 Check our Discord for further information: ' .. QBCore.Config.Server.discord
+    reason = '\n' .. reason .. '\n🔸 Check our Discord for further information: ' .. QBConfig.Server.discord
     if setKickReason then
         setKickReason(reason)
     end
@@ -268,7 +268,7 @@ function QBCore.Functions.IsWhitelisted(source)
     local src = source
     local plicense = QBCore.Functions.GetIdentifier(src, 'license')
     local identifiers = GetPlayerIdentifiers(src)
-    if QBCore.Config.Server.whitelist then
+    if QBConfig.Server.whitelist then
         local result = MySQL.Sync.fetchSingle('SELECT * FROM whitelist WHERE license = ?', { plicense })
         if result then
             for _, id in pairs(identifiers) do
@@ -290,7 +290,7 @@ function QBCore.Functions.AddPermission(source, permission)
     local Player = QBCore.Functions.GetPlayer(src)
     local plicense = Player.PlayerData.license
     if Player then
-        QBCore.Config.Server.PermissionList[plicense] = {
+        QBConfig.Server.PermissionList[plicense] = {
             license = plicense,
             permission = permission:lower(),
         }
@@ -312,7 +312,7 @@ function QBCore.Functions.RemovePermission(source)
     local Player = QBCore.Functions.GetPlayer(src)
     local license = Player.PlayerData.license
     if Player then
-        QBCore.Config.Server.PermissionList[license] = nil
+        QBConfig.Server.PermissionList[license] = nil
         MySQL.Async.execute('DELETE FROM permissions WHERE license = ?', { license })
         Player.Functions.UpdatePlayerData()
     end
@@ -327,9 +327,9 @@ function QBCore.Functions.HasPermission(source, permission)
     if permission == 'user' then
         return true
     else
-        if QBCore.Config.Server.PermissionList[license] then
-            if QBCore.Config.Server.PermissionList[license].license == license then
-                if QBCore.Config.Server.PermissionList[license].permission == permission or QBCore.Config.Server.PermissionList[license].permission == 'god' then
+        if QBConfig.Server.PermissionList[license] then
+            if QBConfig.Server.PermissionList[license].license == license then
+                if QBConfig.Server.PermissionList[license].permission == permission or QBConfig.Server.PermissionList[license].permission == 'god' then
                     return true
                 end
             end
@@ -342,9 +342,9 @@ function QBCore.Functions.GetPermission(source)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
     if license then
-        if QBCore.Config.Server.PermissionList[license] then
-            if QBCore.Config.Server.PermissionList[license].license == license then
-                return QBCore.Config.Server.PermissionList[license].permission
+        if QBConfig.Server.PermissionList[license] then
+            if QBConfig.Server.PermissionList[license].license == license then
+                return QBConfig.Server.PermissionList[license].permission
             end
         end
     end
@@ -357,7 +357,7 @@ function QBCore.Functions.IsOptin(source)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
     if QBCore.Functions.HasPermission(src, 'admin') then
-        return QBCore.Config.Server.PermissionList[license].optin
+        return QBConfig.Server.PermissionList[license].optin
     end
 end
 
@@ -365,7 +365,7 @@ function QBCore.Functions.ToggleOptin(source)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
     if QBCore.Functions.HasPermission(src, 'admin') then
-        QBCore.Config.Server.PermissionList[license].optin = not QBCore.Config.Server.PermissionList[license].optin
+        QBConfig.Server.PermissionList[license].optin = not QBConfig.Server.PermissionList[license].optin
     end
 end
 

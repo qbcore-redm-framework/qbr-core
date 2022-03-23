@@ -14,7 +14,7 @@ end)
 AddEventHandler('chatMessage', function(source, n, message)
     local src = source
     if string.sub(message, 1, 1) == '/' then
-        local args = QBCore.Shared.SplitStr(message, ' ')
+        local args = QBShared.SplitStr(message, ' ')
         local command = string.gsub(args[1]:lower(), '/', '')
         CancelEvent()
         if QBCore.Commands.List[command] then
@@ -92,8 +92,8 @@ RegisterNetEvent('QBCore:server:CloseServer', function(reason)
     local src = source
     if QBCore.Functions.HasPermission(src, 'admin') or QBCore.Functions.HasPermission(src, 'god') then
         local reason = reason or 'No reason specified'
-        QBCore.Config.Server.closed = true
-        QBCore.Config.Server.closedReason = reason
+        QBConfig.Server.closed = true
+        QBConfig.Server.closedReason = reason
     else
         QBCore.Functions.Kick(src, 'You don\'t have permissions for this..', nil, nil)
     end
@@ -102,7 +102,7 @@ end)
 RegisterNetEvent('QBCore:server:OpenServer', function()
     local src = source
     if QBCore.Functions.HasPermission(src, 'admin') or QBCore.Functions.HasPermission(src, 'god') then
-        QBCore.Config.Server.closed = false
+        QBConfig.Server.closed = false
     else
         QBCore.Functions.Kick(src, 'You don\'t have permissions for this..', nil, nil)
     end
@@ -123,8 +123,8 @@ RegisterNetEvent('QBCore:UpdatePlayer', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player then
-        local newHunger = Player.PlayerData.metadata['hunger'] - QBCore.Config.Player.HungerRate
-        local newThirst = Player.PlayerData.metadata['thirst'] - QBCore.Config.Player.ThirstRate
+        local newHunger = Player.PlayerData.metadata['hunger'] - QBConfig.Player.HungerRate
+        local newThirst = Player.PlayerData.metadata['thirst'] - QBConfig.Player.ThirstRate
         if newHunger <= 0 then
             newHunger = 0
         end

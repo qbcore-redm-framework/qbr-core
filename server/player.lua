@@ -46,7 +46,7 @@ function QBCore.Player.CheckPlayerData(source, PlayerData)
     PlayerData.name = GetPlayerName(src)
     PlayerData.cid = PlayerData.cid or 1
     PlayerData.money = PlayerData.money or {}
-    for moneytype, startamount in pairs(QBCore.Config.Money.MoneyTypes) do
+    for moneytype, startamount in pairs(QBConfig.Money.MoneyTypes) do
         PlayerData.money[moneytype] = PlayerData.money[moneytype] or startamount
     end
     -- Charinfo
@@ -72,7 +72,7 @@ function QBCore.Player.CheckPlayerData(source, PlayerData)
     PlayerData.metadata['jailitems'] = PlayerData.metadata['jailitems'] or {}
     PlayerData.metadata['status'] = PlayerData.metadata['status'] or {}
     PlayerData.metadata['commandbinds'] = PlayerData.metadata['commandbinds'] or {}
-    PlayerData.metadata['bloodtype'] = PlayerData.metadata['bloodtype'] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
+    PlayerData.metadata['bloodtype'] = PlayerData.metadata['bloodtype'] or QBConfig.Player.Bloodtypes[math.random(1, #QBConfig.Player.Bloodtypes)]
     PlayerData.metadata['dealerrep'] = PlayerData.metadata['dealerrep'] or 0
     PlayerData.metadata['craftingrep'] = PlayerData.metadata['craftingrep'] or 0
     PlayerData.metadata['attachmentcraftingrep'] = PlayerData.metadata['attachmentcraftingrep'] or 0
@@ -111,8 +111,8 @@ function QBCore.Player.CheckPlayerData(source, PlayerData)
     PlayerData.job.name = PlayerData.job.name or 'unemployed'
     PlayerData.job.label = PlayerData.job.label or 'Civilian'
     PlayerData.job.payment = PlayerData.job.payment or 10
-    if QBCore.Shared.ForceJobDefaultDutyAtLogin or PlayerData.job.onduty == nil then
-        PlayerData.job.onduty = QBCore.Shared.Jobs[PlayerData.job.name].defaultDuty
+    if QBShared.ForceJobDefaultDutyAtLogin or PlayerData.job.onduty == nil then
+        PlayerData.job.onduty = QBShared.Jobs[PlayerData.job.name].defaultDuty
     end
     PlayerData.job.isboss = PlayerData.job.isboss or false
     PlayerData.job.grade = PlayerData.job.grade or {}
@@ -163,13 +163,13 @@ function QBCore.Player.CreatePlayer(PlayerData)
         local job = job:lower()
         local grade = tostring(grade) or '0'
 
-        if QBCore.Shared.Jobs[job] then
+        if QBShared.Jobs[job] then
             self.PlayerData.job.name = job
-            self.PlayerData.job.label = QBCore.Shared.Jobs[job].label
-            self.PlayerData.job.onduty = QBCore.Shared.Jobs[job].defaultDuty
+            self.PlayerData.job.label = QBShared.Jobs[job].label
+            self.PlayerData.job.onduty = QBShared.Jobs[job].defaultDuty
 
-            if QBCore.Shared.Jobs[job].grades[grade] then
-                local jobgrade = QBCore.Shared.Jobs[job].grades[grade]
+            if QBShared.Jobs[job].grades[grade] then
+                local jobgrade = QBShared.Jobs[job].grades[grade]
                 self.PlayerData.job.grade = {}
                 self.PlayerData.job.grade.name = jobgrade.name
                 self.PlayerData.job.grade.level = tonumber(grade)
@@ -195,11 +195,11 @@ function QBCore.Player.CreatePlayer(PlayerData)
         local gang = gang:lower()
         local grade = tostring(grade) or '0'
 
-        if QBCore.Shared.Gangs[gang] then
+        if QBShared.Gangs[gang] then
             self.PlayerData.gang.name = gang
-            self.PlayerData.gang.label = QBCore.Shared.Gangs[gang].label
-            if QBCore.Shared.Gangs[gang].grades[grade] then
-                local ganggrade = QBCore.Shared.Gangs[gang].grades[grade]
+            self.PlayerData.gang.label = QBShared.Gangs[gang].label
+            if QBShared.Gangs[gang].grades[grade] then
+                local ganggrade = QBShared.Gangs[gang].grades[grade]
                 self.PlayerData.gang.grade = {}
                 self.PlayerData.gang.grade.name = ganggrade.name
                 self.PlayerData.gang.grade.level = tonumber(grade)
@@ -266,7 +266,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
             return
         end
         if self.PlayerData.money[moneytype] then
-            for _, mtype in pairs(QBCore.Config.Money.DontAllowMinus) do
+            for _, mtype in pairs(QBConfig.Money.DontAllowMinus) do
                 if mtype == moneytype then
                     if self.PlayerData.money[moneytype] - amount < 0 then
                         return false
@@ -338,7 +338,7 @@ function QBCore.Player.CreatePlayer(PlayerData)
 
     self.Functions.AddItem = function(item, amount, slot, info)
         local totalWeight = QBCore.Player.GetTotalWeight(self.PlayerData.items)
-        local itemInfo = QBCore.Shared.Items[item:lower()]
+        local itemInfo = QBShared.Items[item:lower()]
         if itemInfo == nil then
             TriggerClientEvent('QBCore:Notify', self.PlayerData.source, Lang:t('error.item_not_exist'), 'error')
             return
@@ -347,10 +347,10 @@ function QBCore.Player.CreatePlayer(PlayerData)
         local slot = tonumber(slot) or QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
         if itemInfo['type'] == 'weapon' and info == nil then
             info = {
-                serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4)),
+                serie = tostring(QBShared.RandomInt(2) .. QBShared.RandomStr(3) .. QBShared.RandomInt(1) .. QBShared.RandomStr(2) .. QBShared.RandomInt(3) .. QBShared.RandomStr(4)),
             }
         end
-        if (totalWeight + (itemInfo['weight'] * amount)) <= QBCore.Config.Player.MaxWeight then
+        if (totalWeight + (itemInfo['weight'] * amount)) <= QBConfig.Player.MaxWeight then
             if (slot and self.PlayerData.items[slot]) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo['type'] == 'item' and not itemInfo['unique']) then
                 self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
                 self.Functions.UpdatePlayerData()
@@ -557,7 +557,7 @@ QBCore.Player.LoadInventory = function(PlayerData)
         if next(inventory) then
             for _, item in pairs(inventory) do
                 if item then
-                    local itemInfo = QBCore.Shared.Items[item.name:lower()]
+                    local itemInfo = QBShared.Items[item.name:lower()]
                     if itemInfo then
                         PlayerData.items[item.slot] = {
                             name = itemInfo['name'],
@@ -646,7 +646,7 @@ function QBCore.Player.CreateCitizenId()
     local UniqueFound = false
     local CitizenId = nil
     while not UniqueFound do
-        CitizenId = tostring(QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(5)):upper()
+        CitizenId = tostring(QBShared.RandomStr(3) .. QBShared.RandomInt(5)):upper()
         local result = MySQL.Sync.prepare('SELECT COUNT(*) as count FROM players WHERE citizenid = ?', { CitizenId })
         if result == 0 then
             UniqueFound = true
@@ -659,7 +659,7 @@ function QBCore.Player.CreateFingerId()
     local UniqueFound = false
     local FingerId = nil
     while not UniqueFound do
-        FingerId = tostring(QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(1) .. QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(4))
+        FingerId = tostring(QBShared.RandomStr(2) .. QBShared.RandomInt(3) .. QBShared.RandomStr(1) .. QBShared.RandomInt(2) .. QBShared.RandomStr(3) .. QBShared.RandomInt(4))
         local query = '%' .. FingerId .. '%'
         local result = MySQL.Sync.prepare('SELECT COUNT(*) as count FROM `players` WHERE `metadata` LIKE ?', { query })
         if result == 0 then

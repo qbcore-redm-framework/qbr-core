@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'rdr3'
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
-description 'qbr-core'
+description 'QBCore RedM Edition'
 version '1.0.0'
 
 shared_scripts {
@@ -21,7 +21,9 @@ client_scripts {
 	'client/main.lua',
 	'client/functions.lua',
 	'client/loops.lua',
-	'client/events.lua'
+	'client/events.lua',
+	'client/notify.js',
+	'client/drawtxt.lua'
 }
 
 server_scripts {
@@ -37,15 +39,14 @@ server_scripts {
 ui_page 'html/index.html'
 
 files {
-	'html/index.html',
-	'html/style.css',
-	'html/*.js'
+    'html/index.html',
+    'html/script.js',
+    'html/style.css'
 }
 
 dependencies {
 	'oxmysql',
-	'progressbar',
-	'connectqueue'
+	--'connectqueue'
 }
 
 lua54 'yes'

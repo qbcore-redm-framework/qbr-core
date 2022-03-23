@@ -6,9 +6,8 @@ QBShared.Horses = {
 		['price'] = 15,
 		['category'] = 'horse',
 		['type'] = 'horse',
-		['type'] = 'other',
 		['hash'] = 0x69A37A7B,
-		['shop'] = '',		
+		['shop'] = '',
 	},
 	['Greyovero'] = {
 		['name'] = 'Greyovero',
@@ -171,7 +170,7 @@ QBShared.Horses = {
 		['type'] = 'Arabian',
 		['hash'] = 0x88D6A59E,
 		['shop'] = '',
-	},	
+	},
 	['ArabianGrey'] = {
 		['name'] = 'ArabianGrey',
 		['model'] = `A_C_Horse_Arabian_Grey`,
@@ -297,7 +296,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['SootyBuckskin'] = {
 		['name'] = 'SootyBuckskin',
 		['model'] = `A_C_Horse_DutchWarmblood_SootyBuckskin`,
@@ -306,7 +305,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['EagleFlies'] = {
 		['name'] = 'EagleFlies',
 		['model'] = `A_C_Horse_EagleFlies`,
@@ -315,7 +314,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['Bill'] = {
 		['name'] = 'Bill',
 		['model'] = `A_C_Horse_Gang_Bill`,
@@ -324,7 +323,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},		
+	},
 	['Charles'] = {
 		['name'] = 'Charles',
 		['model'] = `A_C_Horse_Gang_Charles`,
@@ -342,7 +341,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['Dutch'] = {
 		['name'] = 'Dutch',
 		['model'] = `A_C_Horse_Gang_Dutch`,
@@ -621,7 +620,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['Palomino'] = {
 		['name'] = 'Palomino',
 		['model'] = `A_C_Horse_Morgan_Palomino`,
@@ -648,7 +647,7 @@ QBShared.Horses = {
 		['type'] = 'horse',
 		['hash'] = 0x8AF8EE209,
 		['shop'] = '',
-	},	
+	},
 	['Mange2'] = {
 		['name'] = 'Mange2',
 		['model'] = `A_C_Horse_MurfreeBrood_Mange_02`,
