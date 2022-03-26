@@ -4,7 +4,7 @@
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     ShutdownLoadingScreenNui()
     LocalPlayer.state:set('isLoggedIn', true, false)
-    if QBConfig.Server.pvp then
+    if QBConfig.EnablePVP then
         NetworkSetFriendlyFireOption(true)
     end
     if QBConfig.Player.RevealMap then
@@ -37,7 +37,7 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
     local GetGroundZAndNormalFor_3dCoord = GetGroundZAndNormalFor_3dCoord
 
     if not IsWaypointActive() then
-        exports['qbr-core']:Notify(9, 'No Waypoint Set', 2000, 0, 'ammo_types', 'bullet_split_point')
+        Notify(9, 'No Waypoint Set', 2000, 0, 'ammo_types', 'bullet_split_point')
         return 'marker'
     end
 
@@ -106,12 +106,12 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
         -- If we can't find the coords, set the coords to the old ones.
         -- We don't unpack them before since they aren't in a loop and only called once.
         SetEntityCoords(ped, oldCoords['x'], oldCoords['y'], oldCoords['z'] - 1.0)
-        exports['qbr-core']:Notify(9, 'Error teleporting', 2000, 0, 'ammo_types', 'bullet_split_point')
+        Notify(9, 'Error teleporting', 2000, 0, 'ammo_types', 'bullet_split_point')
     end
 
     -- If Z coord was found, set coords in found coords.
     SetEntityCoords(ped, x, y, groundZ)
-    exports['qbr-core']:Notify(9, 'Teleported', 2000, 0, 'hud_textures', 'check')
+    Notify(9, 'Teleported', 2000, 0, 'hud_textures', 'check')
 end)
 
 -- Vehicle | Horse Events
@@ -153,7 +153,7 @@ RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
 		Citizen.InvokeNative(0xAAB86462966168CE, npc, 1)
         Wait(500)
     else
-		exports['qbr-core']:Notify(9, 'Model not found', 2000, 0, 'ammo_types', 'bullet_split_point')
+		Notify(9, 'Model not found', 2000, 0, 'ammo_types', 'bullet_split_point')
     end
 end)
 
@@ -168,7 +168,11 @@ RegisterNetEvent('QBCore:Player:UpdatePlayerData', function()
 end)
 
 RegisterNetEvent('QBCore:Notify', function(id, text, duration, subtext, dict, icon, color)
-    exports['qbr-core']:Notify(id, text, duration, subtext, dict, icon, color)
+    Notify(id, text, duration, subtext, dict, icon, color)
+end)
+
+RegisterNetEvent('QBCore:Client:UseItem', function(item)
+    TriggerServerEvent('QBCore:Server:UseItem', item)
 end)
 
 RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
@@ -176,8 +180,4 @@ RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
         QBCore.ServerCallbacks[name](...)
         QBCore.ServerCallbacks[name] = nil
     end
-end)
-
-RegisterNetEvent('QBCore:Client:UseItem', function(item)
-    TriggerServerEvent('QBCore:Server:UseItem', item)
 end)

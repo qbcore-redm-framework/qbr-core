@@ -1,42 +1,46 @@
 -- Event Handler
 
 AddEventHandler('playerDropped', function()
-    local src = source
-    if QBCore.Players[src] then
-        local Player = QBCore.Players[src]
-        TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(src) .. '** (' .. Player.PlayerData.license .. ') left..')
+    if QBCore.Players[source] then
+        local Player = QBCore.Players[source]
+        TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(source) .. '** (' .. Player.PlayerData.license .. ') left..')
         Player.Functions.Save()
-        _G.Player_Buckets[Player.PlayerData.license] = nil
-        QBCore.Players[src] = nil
+        QBCore.Players[source] = nil
     end
 end)
 
-AddEventHandler('chatMessage', function(source, n, message)
-    local src = source
-    if string.sub(message, 1, 1) == '/' then
-        local args = QBShared.SplitStr(message, ' ')
-        local command = string.gsub(args[1]:lower(), '/', '')
-        CancelEvent()
-        if QBCore.Commands.List[command] then
-            local Player = QBCore.Functions.GetPlayer(src)
-            if Player then
-                local isGod = QBCore.Functions.HasPermission(src, 'god')
-                local hasPerm = QBCore.Functions.HasPermission(src, QBCore.Commands.List[command].permission)
-                local isPrincipal = IsPlayerAceAllowed(src, 'command')
-                table.remove(args, 1)
-                if isGod or hasPerm or isPrincipal then
-                    if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
-                        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.missing_args2'), 'error')
-                    else
-                        QBCore.Commands.List[command].callback(src, args)
-                    end
-                else
-                    TriggerClientEvent('QBCore:Notify', src, Lang:t('error.no_access'), 'error')
+local function IsPlayerBanned(source)
+    local retval = false
+    local message = ''
+    local plicense = GetIdentifier(source, 'license')
+    local result = MySQL.Sync.fetchSingle('SELECT * FROM bans WHERE license = ?', { plicense })
+    if result then
+        if os.time() < result.expire then
+            retval = true
+            local timeTable = os.date('*t', tonumber(result.expire))
+            message = 'You have been banned from the server:\n' .. result[1].reason .. '\nYour ban expires ' .. timeTable.day .. '/' .. timeTable.month .. '/' .. timeTable.year .. ' ' .. timeTable.hour .. ':' .. timeTable.min .. '\n'
+        else
+            MySQL.Async.execute('DELETE FROM bans WHERE id = ?', { result[1].id })
+        end
+    end
+    return retval, message
+end
+
+local function IsLicenseInUse(license)
+    local players = GetPlayers()
+    for _, player in pairs(players) do
+        local identifiers = GetPlayerIdentifiers(player)
+        for _, id in pairs(identifiers) do
+            if string.find(id, 'license') then
+                local playerLicense = id
+                if playerLicense == license then
+                    return true
                 end
             end
         end
     end
-end)
+    return false
+end
 
 -- Player Connecting
 
@@ -63,8 +67,8 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
 
     deferrals.update(string.format('Hello %s. We are checking if you are banned.', name))
 
-    local isBanned, Reason = QBCore.Functions.IsPlayerBanned(player)
-    local isLicenseAlreadyInUse = QBCore.Functions.IsLicenseInUse(license)
+    local isBanned, Reason = IsPlayerBanned(player)
+    local isLicenseAlreadyInUse = IsLicenseInUse(license)
 
     Wait(2500)
 
@@ -86,42 +90,10 @@ end
 
 AddEventHandler('playerConnecting', OnPlayerConnecting)
 
--- Open & Close Server (prevents players from joining)
-
-RegisterNetEvent('QBCore:server:CloseServer', function(reason)
-    local src = source
-    if QBCore.Functions.HasPermission(src, 'admin') or QBCore.Functions.HasPermission(src, 'god') then
-        local reason = reason or 'No reason specified'
-        QBConfig.Server.closed = true
-        QBConfig.Server.closedReason = reason
-    else
-        QBCore.Functions.Kick(src, 'You don\'t have permissions for this..', nil, nil)
-    end
-end)
-
-RegisterNetEvent('QBCore:server:OpenServer', function()
-    local src = source
-    if QBCore.Functions.HasPermission(src, 'admin') or QBCore.Functions.HasPermission(src, 'god') then
-        QBConfig.Server.closed = false
-    else
-        QBCore.Functions.Kick(src, 'You don\'t have permissions for this..', nil, nil)
-    end
-end)
-
--- Callbacks
-
-RegisterNetEvent('QBCore:Server:TriggerCallback', function(name, ...)
-    local src = source
-    QBCore.Functions.TriggerCallback(name, src, function(...)
-        TriggerClientEvent('QBCore:Client:TriggerCallback', src, name, ...)
-    end, ...)
-end)
-
 -- Player
 
 RegisterNetEvent('QBCore:UpdatePlayer', function()
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     if Player then
         local newHunger = Player.PlayerData.metadata['hunger'] - QBConfig.Player.HungerRate
         local newThirst = Player.PlayerData.metadata['thirst'] - QBConfig.Player.ThirstRate
@@ -133,14 +105,13 @@ RegisterNetEvent('QBCore:UpdatePlayer', function()
         end
         Player.Functions.SetMetaData('thirst', newThirst)
         Player.Functions.SetMetaData('hunger', newHunger)
-        TriggerClientEvent('hud:client:UpdateNeeds', src, newHunger, newThirst)
+        TriggerClientEvent('hud:client:UpdateNeeds', source, newHunger, newThirst)
         Player.Functions.Save()
     end
 end)
 
 RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     if meta == 'hunger' or meta == 'thirst' then
         if data > 100 then
             data = 100
@@ -149,42 +120,38 @@ RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
     if Player then
         Player.Functions.SetMetaData(meta, data)
     end
-    TriggerClientEvent('hud:client:UpdateNeeds', src, Player.PlayerData.metadata['hunger'], Player.PlayerData.metadata['thirst'])
+    TriggerClientEvent('hud:client:UpdateNeeds', source, Player.PlayerData.metadata['hunger'], Player.PlayerData.metadata['thirst'])
 end)
 
 RegisterNetEvent('QBCore:ToggleDuty', function()
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.onduty then
         Player.Functions.SetJobDuty(false)
-        TriggerClientEvent('QBCore:Notify', src, Lang:t('info.off_duty'))
+        TriggerClientEvent('QBCore:Notify', source, Lang:t('info.off_duty'))
     else
         Player.Functions.SetJobDuty(true)
-        TriggerClientEvent('QBCore:Notify', src, Lang:t('info.on_duty'))
+        TriggerClientEvent('QBCore:Notify', source, Lang:t('info.on_duty'))
     end
-    TriggerClientEvent('QBCore:Client:SetDuty', src, Player.PlayerData.job.onduty)
+    TriggerClientEvent('QBCore:Client:SetDuty', source, Player.PlayerData.job.onduty)
 end)
 
 -- Items
 
 RegisterNetEvent('QBCore:Server:UseItem', function(item)
-    local src = source
     if item and item.amount > 0 then
         if QBCore.Functions.CanUseItem(item.name) then
-            QBCore.Functions.UseItem(src, item)
+            QBCore.Functions.UseItem(source, item)
         end
     end
 end)
 
 RegisterNetEvent('QBCore:Server:RemoveItem', function(itemName, amount, slot)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     Player.Functions.RemoveItem(itemName, amount, slot)
 end)
 
 RegisterNetEvent('QBCore:Server:AddItem', function(itemName, amount, slot, info)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     Player.Functions.AddItem(itemName, amount, slot, info)
 end)
 
@@ -220,35 +187,16 @@ RegisterNetEvent('QBCore:Player:RemoveXp', function(source, skill, amount) -- re
 	end
 end)
 
--- Non-Chat Command Calling (ex: qb-adminmenu)
-
-RegisterNetEvent('QBCore:CallCommand', function(command, args)
+RegisterNetEvent('QBCore:Server:TriggerCallback', function(name, ...)
     local src = source
-    if QBCore.Commands.List[command] then
-        local Player = QBCore.Functions.GetPlayer(src)
-        if Player then
-            local isGod = QBCore.Functions.HasPermission(src, 'god')
-            local hasPerm = QBCore.Functions.HasPermission(src, QBCore.Commands.List[command].permission)
-            local isPrincipal = IsPlayerAceAllowed(src, 'command')
-            if (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) or isGod or hasPerm or isPrincipal then
-                if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
-                    TriggerClientEvent('QBCore:Notify', src, Lang:t('error.missing_args2'), 'error')
-                else
-                    QBCore.Commands.List[command].callback(src, args)
-                end
-            else
-                TriggerClientEvent('QBCore:Notify', src, Lang:t('error.no_access'), 'error')
-            end
-        end
-    end
+    TriggerCallback(name, src, function(...)
+        TriggerClientEvent('QBCore:Client:TriggerCallback', src, name, ...)
+    end, ...)
 end)
 
--- Has Item Callback (can also use client function - QBCore.Functions.HasItem(item))
-
-QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, items, amount)
-    local src = source
+CreateCallback('QBCore:HasItem', function(source, cb, items, amount)
     local retval = false
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(source)
     if Player then
         if type(items) == 'table' then
             local count = 0

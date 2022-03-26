@@ -18,17 +18,15 @@ shared_scripts {
 }
 
 client_scripts {
-	'client/main.lua',
 	'client/functions.lua',
 	'client/loops.lua',
 	'client/events.lua',
 	'client/notify.js',
-	'client/drawtxt.lua'
+	'client/drawtxt.lua',
 }
 
 server_scripts {
 	'@oxmysql/lib/MySQL.lua',
-	'server/main.lua',
 	'server/functions.lua',
 	'server/player.lua',
 	'server/events.lua',

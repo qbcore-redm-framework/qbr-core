@@ -1,3 +1,33 @@
+QBCore = {}
+QBCore.PlayerData = {}
+QBCore.ServerCallbacks = {}
+
+-- Shared
+
+exports('GetGangs', function()
+    return QBShared.Gangs
+end)
+
+exports('GetHorses', function()
+    return QBShared.Horses
+end)
+
+exports('GetItems', function()
+    return QBShared.Items
+end)
+
+exports('GetJobs', function()
+    return QBShared.Jobs
+end)
+
+exports('GetVehicles', function()
+    return QBShared.Vehicles
+end)
+
+exports('GetWeapons', function()
+    return QBShared.Weapons
+end)
+
 -- Player
 
 exports('GetPlayerData', function(cb)
@@ -16,7 +46,7 @@ end)
 
 exports('HasItem', function(item)
     local p = promise.new()
-    exports['qbr-core']:TriggerCallback('QBCore:HasItem', function(result)
+    TriggerCallback('QBCore:HasItem', function(result)
         p:resolve(result)
     end, item)
     return Citizen.Await(p)
@@ -28,10 +58,18 @@ exports('Debug', function(resource, obj, depth)
     TriggerServerEvent('QBCore:DebugSomething', resource, obj, depth)
 end)
 
-exports('TriggerCallback', function(name, cb, ...)
+-- function TriggerCallback(event, ...)
+-- 	local id = math.random(0, 100000)
+-- 	event = ('__cb_%s'):format(event)
+-- 	TriggerServerEvent(event, id, ...)
+-- 	return event..id
+-- end
+
+function TriggerCallback(name, cb, ...)
     QBCore.ServerCallbacks[name] = cb
     TriggerServerEvent('QBCore:Server:TriggerCallback', name, ...)
-end)
+end
+exports('TriggerCallback', TriggerCallback)
 
 -- Getters
 
@@ -215,7 +253,7 @@ local function LoadTexture(dict)
     end
 end
 
-exports('Notify', function(id, text, duration, subtext, dict, icon, color)
+function Notify(id, text, duration, subtext, dict, icon, color)
     local display = tostring(text) or 'Placeholder'
 	local subdisplay = tostring(subtext) or 'Placeholder'
 	local length = tonumber(duration) or 4000
@@ -243,4 +281,5 @@ exports('Notify', function(id, text, duration, subtext, dict, icon, color)
     else
         return notifications[id]()
     end
-end)
+end
+exports('Notify', Notify)

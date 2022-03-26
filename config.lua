@@ -4,6 +4,8 @@ QBConfig.MaxPlayers = GetConvarInt('sv_maxclients', 48) -- Gets max players from
 QBConfig.DefaultSpawn = vector4(-1035.71, -2731.87, 12.86, 0.0)
 QBConfig.UpdateInterval = 5 -- how often to update player data in minutes
 QBConfig.StatusInterval = 5000 -- how often to check hunger/thirst status in ms
+QBConfig.EnablePVP = true -- Enable or disable pvp on the server (Ability to shoot other players)
+QBConfig.Discord = "" -- Discord invite link
 
 QBConfig.Money = {}
 QBConfig.Money.MoneyTypes = {['cash'] = 2, ['bank'] = 40} -- ['type']=startamount - Add or remove money types for your server (for ex. ['blackmoney']=0), remember once added it will not be removed from the database!
@@ -27,15 +29,6 @@ QBConfig.Player.Bloodtypes = {
     "O+",
     "O-",
 }
-
-QBConfig.Server = {} -- General server config
-QBConfig.Server.closed = false -- Set server closed (no one can join except people with ace permission 'qbadmin.join')
-QBConfig.Server.closedReason = "Server Closed" -- Reason message to display when people can't join the server
-QBConfig.Server.uptime = 0 -- Time the server has been up.
-QBConfig.Server.whitelist = false -- Enable or disable whitelist on the server
-QBConfig.Server.pvp = true -- Enable or disable pvp on the server (Ability to shoot other players)
-QBConfig.Server.discord = "" -- Discord invite link
-QBConfig.Server.PermissionList = {} -- permission list
 
 -- Left side is level right side xp needed, you just have to add the skill here and in the metadata in servers/player.lua
 -- You dont have to use this if you dont want to, just leave as is
