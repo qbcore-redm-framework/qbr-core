@@ -21,7 +21,7 @@ function RefreshCommands(source)
     local suggestions = {}
     if Player then
         for command, info in pairs(CommandList) do
-            local hasPerm = IsPlayerAceAllowed(src, 'command')
+            local hasPerm = IsPlayerAceAllowed(tostring(src), info.permission)
             if hasPerm then
                 suggestions[#suggestions + 1] = {
                     name = '/' .. command,
@@ -61,20 +61,20 @@ AddCommand('tp', 'TP To Player or Coords (Admin Only)', { { name = 'id/x', help 
             TriggerClientEvent('QBCore:Notify', src, Lang:t('error.missing_args'), 'error')
         end
     end
-end, true)
+end, 'admin')
 
 AddCommand('tpm', 'TP To Marker (Admin Only)', {}, false, function(source)
     local src = source
     TriggerClientEvent('QBCore:Command:GoToMarker', src)
-end, true)
+end, 'mod')
 
 AddCommand('togglepvp', 'Toggle PVP on the server (Admin Only)', {}, false, function(source)
-    local pvp_state = QBConfig.Server.pvp
+    local pvp_state = QBConfig.EnablePVP
     QBConfig.EnablePVP = not pvp_state
     TriggerClientEvent('QBCore:Client:PvpHasToggled', -1, QBConfig.EnablePVP)
-end, true)
+end, 'god')
 
--- Permissions
+-- -- Permissions
 
 AddCommand('addpermission', 'Give Player Permissions (God Only)', { { name = 'id', help = 'ID of player' }, { name = 'permission', help = 'Permission level' } }, true, function(source, args)
     local src = source
@@ -85,7 +85,7 @@ AddCommand('addpermission', 'Give Player Permissions (God Only)', { { name = 'id
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'god')
 
 AddCommand('removepermission', 'Remove Players Permissions (God Only)', { { name = 'id', help = 'ID of player' } }, true, function(source, args)
     local src = source
@@ -95,29 +95,29 @@ AddCommand('removepermission', 'Remove Players Permissions (God Only)', { { name
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'god')
 
 -- Vehicle
 
 AddCommand('car', 'Spawn Vehicle (Admin Only)', { { name = 'model', help = 'Model name of the vehicle' } }, true, function(source, args)
     local src = source
     TriggerClientEvent('QBCore:Command:SpawnVehicle', src, args[1])
-end, true)
+end, 'admin')
 
 AddCommand('dv', 'Delete Vehicle (Admin Only)', {}, false, function(source)
     local src = source
     TriggerClientEvent('QBCore:Command:DeleteVehicle', src)
-end, true)
+end, 'mod')
 
 AddCommand('horse', 'Spawn Horse (Admin Only)', { { name = 'model', help = 'Model name of the horse' } }, true, function(source, args)
     local src = source
     TriggerClientEvent('QBCore:Command:SpawnHorse', src, args[1])
-end, true)
+end, 'admin')
 
 AddCommand('coords', 'Get your current coords (Admin Only)', {}, false, function(source)
     local src = source
     TriggerClientEvent('QBCore:Command:GetCoords', src)
-end, true)
+end, 'user')
 
 -- Money
 
@@ -129,7 +129,7 @@ AddCommand('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', hel
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'god')
 
 AddCommand('setmoney', 'Set Players Money Amount (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, crypto)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
     local src = source
@@ -139,7 +139,7 @@ AddCommand('setmoney', 'Set Players Money Amount (Admin Only)', { { name = 'id',
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'god')
 
 -- Xp Commands
 
@@ -155,7 +155,7 @@ AddCommand("givexp", "Give A Player Xp (Admin Only)", {{name="id", help="Player 
 	else
 		TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_online'), "error")
 	end
-end, true)
+end, 'god')
 
 AddCommand("removexp", "Give A Player Xp (Admin Only)", {{name="id", help="Player ID"},{name="skill", help="Type of skill (mining, etc)"}, {name="amount", help="Amount of xp"}}, true, function(source, args)
 	local Player = GetPlayer(tonumber(args[1]))
@@ -169,7 +169,7 @@ AddCommand("removexp", "Give A Player Xp (Admin Only)", {{name="id", help="Playe
 	else
 		TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_online'), "error")
 	end
-end, true)
+end, 'god')
 
 AddCommand("xp", "Check How Much Xp You Have", {{name="skill", help="Type of skill (mining, etc)"}}, true, function(source, args)
 	local Player = GetPlayer(source)
@@ -181,7 +181,7 @@ AddCommand("xp", "Check How Much Xp You Have", {{name="skill", help="Type of ski
 			TriggerClientEvent('QBCore:Notify', source, Lang:t('error.no_skill'), "error")
 		end
 	end
-end, false)
+end, 'god')
 
 AddCommand("level", "Check Which Level You Are", {{name="skill", help="Type of skill (mining, etc)"}}, true, function(source, args)
 	local Player = GetPlayer(source)
@@ -193,7 +193,7 @@ AddCommand("level", "Check Which Level You Are", {{name="skill", help="Type of s
 			TriggerClientEvent('QBCore:Notify', source, Lang:t('error.no_skill'), "error")
 		end
 	end
-end, false)
+end, 'god')
 
 -- Job
 
@@ -201,7 +201,7 @@ AddCommand('job', 'Check Your Job', {}, false, function(source)
     local src = source
     local PlayerJob = GetPlayer(src).PlayerData.job
     TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('info.job_info', {value = PlayerJob.label, value2 = PlayerJob.grade.name, value3 = PlayerJob.onduty}), 2000, 0, 'toasts_mp_generic', 'butcher_table_production')
-end, false)
+end, 'user')
 
 AddCommand('setjob', 'Set A Players Job (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'job', help = 'Job name' }, { name = 'grade', help = 'Grade' } }, true, function(source, args)
     local src = source
@@ -211,7 +211,7 @@ AddCommand('setjob', 'Set A Players Job (Admin Only)', { { name = 'id', help = '
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'admin')
 
 -- Gang
 
@@ -219,7 +219,7 @@ AddCommand('gang', 'Check Your Gang', {}, false, function(source)
     local src = source
     local PlayerGang = GetPlayer(source).PlayerData.gang
     TriggerClientEvent('QBCore:Notify', src, Lang:t('info.gang_info', {value = PlayerGang.label, value2 = PlayerGang.grade.name}))
-end, false)
+end, 'user')
 
 AddCommand('setgang', 'Set A Players Gang (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'gang', help = 'Name of a gang' }, { name = 'grade', help = 'Grade' } }, true, function(source, args)
     local src = source
@@ -229,7 +229,7 @@ AddCommand('setgang', 'Set A Players Gang (Admin Only)', { { name = 'id', help =
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'admin')
 
 -- Inventory (should be in qb-inventory?)
 
@@ -242,7 +242,7 @@ AddCommand('clearinv', 'Clear Players Inventory (Admin Only)', { { name = 'id', 
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end
-end, true)
+end, 'god')
 
 -- Out of Character Chat
 
@@ -275,4 +275,4 @@ AddCommand('ooc', 'OOC Chat Message', {}, false, function(source, args)
             end
         end
     end
-end, false)
+end, 'user')

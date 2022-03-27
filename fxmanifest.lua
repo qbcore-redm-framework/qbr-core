@@ -27,11 +27,11 @@ client_scripts {
 
 server_scripts {
 	'@oxmysql/lib/MySQL.lua',
+	'server/debug.lua',
 	'server/functions.lua',
 	'server/player.lua',
 	'server/events.lua',
-	'server/commands.lua',
-	'server/debug.lua'
+	'server/commands.lua'
 }
 
 ui_page 'html/index.html'

@@ -93,7 +93,7 @@ AddEventHandler('playerConnecting', OnPlayerConnecting)
 -- Player
 
 RegisterNetEvent('QBCore:UpdatePlayer', function()
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     if Player then
         local newHunger = Player.PlayerData.metadata['hunger'] - QBConfig.Player.HungerRate
         local newThirst = Player.PlayerData.metadata['thirst'] - QBConfig.Player.ThirstRate
@@ -111,7 +111,7 @@ RegisterNetEvent('QBCore:UpdatePlayer', function()
 end)
 
 RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     if meta == 'hunger' or meta == 'thirst' then
         if data > 100 then
             data = 100
@@ -124,7 +124,7 @@ RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
 end)
 
 RegisterNetEvent('QBCore:ToggleDuty', function()
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     if Player.PlayerData.job.onduty then
         Player.Functions.SetJobDuty(false)
         TriggerClientEvent('QBCore:Notify', source, Lang:t('info.off_duty'))
@@ -139,26 +139,26 @@ end)
 
 RegisterNetEvent('QBCore:Server:UseItem', function(item)
     if item and item.amount > 0 then
-        if QBCore.Functions.CanUseItem(item.name) then
-            QBCore.Functions.UseItem(source, item)
+        if QBCore.UseableItems[item.name] then
+            QBCore.UseableItems[item.name](source, item)
         end
     end
 end)
 
 RegisterNetEvent('QBCore:Server:RemoveItem', function(itemName, amount, slot)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     Player.Functions.RemoveItem(itemName, amount, slot)
 end)
 
 RegisterNetEvent('QBCore:Server:AddItem', function(itemName, amount, slot, info)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     Player.Functions.AddItem(itemName, amount, slot, info)
 end)
 
 -- Xp Events
 
 RegisterNetEvent('QBCore:Player:SetLevel', function(source, skill)
-	local Player = QBCore.Functions.GetPlayer(source)
+	local Player = GetPlayer(source)
 	local Skill = tostring(skill)
 	local currentXp = Player.PlayerData.metadata["xp"][Skill]
 	local Level = 0
@@ -170,7 +170,7 @@ RegisterNetEvent('QBCore:Player:SetLevel', function(source, skill)
 end)
 
 RegisterNetEvent('QBCore:Player:GiveXp', function(source, skill, amount) -- adding QBCore xp if you dont want to import the playerdata or for standalone scripts
-	local Player = QBCore.Functions.GetPlayer(source)
+	local Player = GetPlayer(source)
 	if Player then
 		if Player.PlayerData.metadata["xp"][skill] then
 			Player.Functions.AddXp(skill, amount)
@@ -179,7 +179,7 @@ RegisterNetEvent('QBCore:Player:GiveXp', function(source, skill, amount) -- addi
 end)
 
 RegisterNetEvent('QBCore:Player:RemoveXp', function(source, skill, amount) -- removing QBCore xp if you dont want to import the playerdata or for standalone scripts
-	local Player = QBCore.Functions.GetPlayer(source)
+	local Player = GetPlayer(source)
 	if Player then
 		if Player.PlayerData.metadata["xp"][skill] then
 			Player.Functions.RemoveXp(skill, amount)
@@ -196,7 +196,7 @@ end)
 
 CreateCallback('QBCore:HasItem', function(source, cb, items, amount)
     local retval = false
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = GetPlayer(source)
     if Player then
         if type(items) == 'table' then
             local count = 0
