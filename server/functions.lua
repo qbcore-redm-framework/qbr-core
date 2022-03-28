@@ -96,7 +96,7 @@ end)
 
 function AddPermission(source, permission)
     local license = GetIdentifier(source, 'license')
-    if QBConfig.ServerPermissions[permission] then
+    if QBConfig.Permissions[permission] then
         ExecuteCommand(('add_principal identifier.%s group.%s'):format(license, permission))
         RefreshCommands(source)
     else
@@ -106,7 +106,7 @@ end
 
 function RemovePermission(source)
     local license = GetIdentifier(source, 'license')
-    for k,v in pairs(QBConfig.ServerPermissions) do
+    for k,v in pairs(QBConfig.Permissions) do
         if IsPlayerAceAllowed(source, v) then
             ExecuteCommand(('remove_principal identifier.%s group.%s'):format(license, v))
             RefreshCommands(source)
