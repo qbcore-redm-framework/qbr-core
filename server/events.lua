@@ -1,12 +1,12 @@
 -- Event Handler
 
 AddEventHandler('playerDropped', function()
-    if QBCore.Players[source] then
-        local Player = QBCore.Players[source]
-        TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(source) .. '** (' .. Player.PlayerData.license .. ') left..')
-        Player.Functions.Save()
-        QBCore.Players[source] = nil
-    end
+    local src = source
+    if not QBCore.Players[src] then return end
+    local Player = QBCore.Players[src]
+    TriggerEvent('qb-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(src) .. '** (' .. Player.PlayerData.license .. ') left..')
+    Player.Functions.Save()
+    QBCore.Players[src] = nil
 end)
 
 local function IsPlayerBanned(source)
@@ -53,6 +53,12 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
     -- mandatory wait!
     Wait(0)
 
+    if QBConfig.ServerClosed then
+        if not IsPlayerAceAllowed(player, 'qbadmin.join') then
+            deferrals.done(QBConfig.ServerClosedReason)
+        end
+    end
+
     deferrals.update(string.format('Hello %s. Validating Your Rockstar License', name))
 
     for _, v in pairs(identifiers) do
@@ -82,8 +88,10 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
         deferrals.done('Duplicate Rockstar License Found')
     else
         deferrals.done()
-        Wait(1000)
-        TriggerEvent('connectqueue:playerConnect', name, setKickReason, deferrals)
+        if QBConfig.UseConnectQueue then
+            Wait(1000)
+            TriggerEvent('connectqueue:playerConnect', name, setKickReason, deferrals)
+        end
     end
     --Add any additional defferals you may need!
 end
