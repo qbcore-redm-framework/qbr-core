@@ -104,7 +104,7 @@ function AddPermission(source, permission)
     end
 end
 
-function RemovePermissions(source)
+function RemovePermission(source)
     local license = GetIdentifier(source, 'license')
     for k,v in pairs(QBConfig.ServerPermissions) do
         if IsPlayerAceAllowed(source, v) then
