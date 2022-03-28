@@ -92,6 +92,28 @@ exports('GetDutyCount', function(job)
     return count
 end)
 
+-- Permissions
+
+function AddPermission(source, permission)
+    local license = GetIdentifier(source, 'license')
+    if QBConfig.ServerPermissions[permission] then
+        ExecuteCommand(('add_principal identifier.%s group.%s'):format(license, permission))
+        RefreshCommands(source)
+    else
+        TriggerClientEvent('QBCore:Notify', source, 'Invalid permission level', 'error')
+    end
+end
+
+function RemovePermissions(source)
+    local license = GetIdentifier(source, 'license')
+    for k,v in pairs(QBConfig.ServerPermissions) do
+        if IsPlayerAceAllowed(source, v) then
+            ExecuteCommand(('remove_principal identifier.%s group.%s'):format(license, v))
+            RefreshCommands(source)
+        end
+    end
+end
+
 -- Callbacks
 
 function CreateCallback(name, cb)
@@ -104,14 +126,6 @@ function TriggerCallback(name, source, cb, ...)
     QBCore.ServerCallbacks[name](source, cb, ...)
 end
 exports('TriggerCallback', TriggerCallback)
-
--- function CreateCallback(name, cb)
--- 	name = ('__cb_%s'):format(name)
--- 	RegisterServerEvent(name, function(id, ...)
--- 		TriggerClientEvent(name..id, source, {cb(source, ...)})
--- 	end)
--- end
---exports('CreateCallback', CreateCallback)
 
 -- Items
 

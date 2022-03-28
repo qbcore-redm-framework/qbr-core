@@ -8,6 +8,7 @@ QBConfig.Discord = "" -- Discord invite link
 QBConfig.ServerClosed = true -- Set server closed (no one can join except people with ace permission 'qbadmin.join')
 QBConfig.ServerClosedReason = "Server Closed" -- Reason for server being closed
 QBConfig.UseConnectQueue = true -- Use connectqueue resource for queue system
+QBConfig.Permissions = {'god', 'admin', 'mod'} -- Add as many groups as you want here after creating them in your server.cfg
 
 QBConfig.Money = {}
 QBConfig.Money.MoneyTypes = {['cash'] = 2, ['bank'] = 40} -- ['type']=startamount - Add or remove money types for your server (for ex. ['blackmoney']=0), remember once added it will not be removed from the database!
