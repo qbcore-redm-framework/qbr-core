@@ -1,12 +1,28 @@
 local CommandList = {}
+local IgnoreList = { -- Ignore old perm levels while keeping backwards compatibility
+    ['god'] = true, -- We don't need to create an ace because god is allowed all commands
+    ['user'] = true -- We don't need to create an ace because builtin.everyone
+}
+
+CreateThread(function() -- Add ace to node for perm checking
+    for k,v in pairs(QBConfig.Permissions) do
+        ExecuteCommand(('add_ace qbcore.%s %s allow'):format(v, v))
+    end
+end)
 
 -- Register & Refresh Commands
 
 local function AddCommand(name, help, arguments, argsrequired, callback, permission)
-    RegisterCommand(name, callback, permission)
+    local restricted = true -- Default to restricted for all commands
+    if not permission then permission = 'user' end -- some commands don't pass permission level
+    if permission == 'user' then restricted = false end -- allow all users to use command
+    RegisterCommand(name, callback, restricted) -- Register command within fivem
+    if not IgnoreList[permission] then -- only create aces for extra perm levels
+        ExecuteCommand(('add_ace qbcore.%s command.%s allow'):format(permission, name))
+    end
     CommandList[name:lower()] = {
         name = name:lower(),
-        permission = permission,
+        permission = tostring(permission:lower()),
         help = help,
         arguments = arguments,
         argsrequired = argsrequired,
@@ -21,16 +37,18 @@ function RefreshCommands(source)
     local suggestions = {}
     if Player then
         for command, info in pairs(CommandList) do
-            local hasPerm = IsPlayerAceAllowed(tostring(src), info.permission)
+            local hasPerm = IsPlayerAceAllowed(tostring(src), 'command.'..command)
             if hasPerm then
                 suggestions[#suggestions + 1] = {
                     name = '/' .. command,
                     help = info.help,
                     params = info.arguments
                 }
+            else
+                TriggerClientEvent('chat:removeSuggestion', src, '/'..command)
             end
         end
-        TriggerClientEvent('chat:addSuggestions', tonumber(src), suggestions)
+        TriggerClientEvent('chat:addSuggestions', src, suggestions)
     end
 end
 exports('RefreshCommands', RefreshCommands)
@@ -87,11 +105,12 @@ AddCommand('addpermission', 'Give Player Permissions (God Only)', { { name = 'id
     end
 end, 'god')
 
-AddCommand('removepermission', 'Remove Players Permissions (God Only)', { { name = 'id', help = 'ID of player' } }, true, function(source, args)
+AddCommand('removepermission', 'Remove Players Permissions (God Only)', { { name = 'id', help = 'ID of player' }, { name = 'permission', help = 'Permission level' } }, true, function(source, args)
     local src = source
     local Player = GetPlayer(tonumber(args[1]))
+    local permission = tostring(args[2]):lower()
     if Player then
-        RemovePermission(Player.PlayerData.source)
+        RemovePermission(Player.PlayerData.source, permission)
     else
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_online'), 'error')
     end

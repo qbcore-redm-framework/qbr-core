@@ -92,28 +92,6 @@ exports('GetDutyCount', function(job)
     return count
 end)
 
--- Permissions
-
-function AddPermission(source, permission)
-    local license = GetIdentifier(source, 'license')
-    if QBConfig.Permissions[permission] then
-        ExecuteCommand(('add_principal identifier.%s group.%s'):format(license, permission))
-        RefreshCommands(source)
-    else
-        TriggerClientEvent('QBCore:Notify', source, 'Invalid permission level', 'error')
-    end
-end
-
-function RemovePermission(source)
-    local license = GetIdentifier(source, 'license')
-    for k,v in pairs(QBConfig.Permissions) do
-        if IsPlayerAceAllowed(source, v) then
-            ExecuteCommand(('remove_principal identifier.%s group.%s'):format(license, v))
-            RefreshCommands(source)
-        end
-    end
-end
-
 -- Callbacks
 
 function CreateCallback(name, cb)
@@ -176,3 +154,74 @@ exports('KickPlayer', function(source, reason, setKickReason, deferrals)
         end
     end)
 end)
+
+-- Setting & Removing Permissions
+
+function AddPermission(source, permission)
+    local src = source
+    local license = GetIdentifier(src, 'license')
+    ExecuteCommand(('add_principal identifier.%s qbcore.%s'):format(license, permission))
+    RefreshCommands(src)
+end
+exports('AddPermission', AddPermission)
+
+function RemovePermission(source, permission)
+    local src = source
+    local license = GetIdentifier(src, 'license')
+    if permission then
+        if IsPlayerAceAllowed(src, permission) then
+            ExecuteCommand(('remove_principal identifier.%s qbcore.%s'):format(license, permission))
+            RefreshCommands(src)
+        end
+    else
+        for k,v in pairs(QBConfig.Permissions) do
+            if IsPlayerAceAllowed(src, v) then
+                ExecuteCommand(('remove_principal identifier.%s qbcore.%s'):format(license, v))
+                RefreshCommands(src)
+            end
+        end
+    end
+end
+exports('RemovePermission', RemovePermission)
+
+-- Checking for Permission Level
+
+function HasPermission(source, permission)
+    local src = source
+    if IsPlayerAceAllowed(src, permission) then return true end
+    return false
+end
+exports('HasPermission', HasPermission)
+
+function GetPermissions(source)
+    local src = source
+    local perms = {}
+    for k,v in pairs (QBConfig.Permissions) do
+        if IsPlayerAceAllowed(src, v) then
+            perms[v] = true
+        end
+    end
+    return perms
+end
+exports('GetPermissions', GetPermissions)
+
+-- Opt in or out of admin reports
+
+function IsOptin(source)
+    local src = source
+    local license = GetIdentifier(src, 'license')
+    if not license or not HasPermission(src, 'admin') then return false end
+    local Player = GetPlayer(src)
+    return Player.PlayerData.optin
+end
+exports('IsOptin', IsOptin)
+
+function ToggleOptin(source)
+    local src = source
+    local license = GetIdentifier(src, 'license')
+    if not license or not HasPermission(src, 'admin') then return end
+    local Player = GetPlayer(src)
+    Player.PlayerData.optin = not Player.PlayerData.optin
+    Player.Functions.SetMetaData('optin', Player.PlayerData.optin)
+end
+exports('ToggleOptin', ToggleOptin)
