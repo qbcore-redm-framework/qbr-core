@@ -1,6 +1,7 @@
 QBCore = {}
 QBCore.Player = {}
 QBCore.Players = {}
+QBCore.UseableItems = {}
 QBCore.ServerCallbacks = {}
 
 -- Shared
@@ -11,6 +12,12 @@ end)
 
 exports('GetHorses', function()
     return QBShared.Horses
+end)
+
+exports('GetItem', function(item)
+    if QBShared.Items[item] then
+        return QBShared.Items[item]
+    end
 end)
 
 exports('GetItems', function()
@@ -27,6 +34,10 @@ end)
 
 exports('GetWeapons', function()
     return QBShared.Weapons
+end)
+
+exports('GetConfig', function()
+    return QBConfig
 end)
 
 -- Returns the entire player object
@@ -108,8 +119,8 @@ exports('TriggerCallback', TriggerCallback)
 -- Items
 
 -- Creates an item as usable
-exports('CreateUsableItem', function(item, cb)
-    QBCore.UsableItems[item] = cb
+exports('CreateUseableItem', function(item, cb)
+    QBCore.UseableItems[item] = cb
 end)
 
 -- Checks if an item can be used
