@@ -12,7 +12,7 @@ local function createPrompt(name, coords, key, text, options)
         Prompts[name].active = false
         Prompts[name].prompt = nil
     else
-        print('[qbr-prompts]  Prompt with name ' .. name .. ' already exists!')
+        print('[qbr-core]  Prompt with name ' .. name .. ' already exists!')
     end
 end
 
@@ -26,7 +26,7 @@ local function createPromptGroup(group, label, coords, prompts)
         PromptGroups[group].created = false
         PromptGroups[group].prompts = prompts
     else
-        print('[qbr-prompts]  Prompt with name ' .. group .. ' already exists!')
+        print('[qbr-core]  Prompt with name ' .. group .. ' already exists!')
     end
 end
 
@@ -58,7 +58,7 @@ local function setupPrompt(prompt)
 end
 
 local function setupPromptGroup(prompt)
-    for k,v in pairs(prompt.prompts) do 
+    for k,v in pairs(prompt.prompts) do
         local str = CreateVarString(10, 'LITERAL_STRING', v.text)
         v.prompt = Citizen.InvokeNative(0x04F97DE45A519419, Citizen.ReturnResultAnyway())
         Citizen.InvokeNative(0xB5352B7494A08258, v.prompt, v.key)
@@ -68,7 +68,7 @@ local function setupPromptGroup(prompt)
         Citizen.InvokeNative(0x94073D5CA3F16B7B, v.prompt, true)
         Citizen.InvokeNative(0x2F11D3A254169EA4, v.prompt, prompt.group, 0)
         Citizen.InvokeNative(0xF7AA2696A22AD8B9, v.prompt)
-    end 
+    end
 
     prompt.created = true
 end
@@ -137,7 +137,7 @@ CreateThread(function()
 
                     Citizen.InvokeNative(0xC65A45D4453C2627, promptGroup, CreateVarString(10, 'LITERAL_STRING', PromptGroups[k].label), 1)
 
-                    for i,j in pairs(PromptGroups[k].prompts) do 
+                    for i,j in pairs(PromptGroups[k].prompts) do
                         if (Citizen.InvokeNative(0xE0F65F0640EF0617, j.prompt)) then
                             executeOptions(j.options)
                             j.prompt = nil
@@ -146,7 +146,7 @@ CreateThread(function()
                     end
                 else
                     if (PromptGroups[k].active) then
-                        for i,j in pairs(PromptGroups[k].prompts) do 
+                        for i,j in pairs(PromptGroups[k].prompts) do
                             j.prompt = nil
                         end
                         Prompts[k].active = false
@@ -160,7 +160,7 @@ end)
 
 -- https://github.com/femga/rdr3_discoveries/tree/master/graphics/HUD/prompts/prompt_types
 CreateThread(function()
-    while true do 
+    while true do
         Wait(1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 2)
