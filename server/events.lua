@@ -54,7 +54,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
     Wait(0)
 
     if QBConfig.ServerClosed then
-        if not IsPlayerAceAllowed(player, 'qbadmin.join') then
+        if not IsPlayerAceAllowed(player, 'whitelisted') then
             deferrals.done(QBConfig.ServerClosedReason)
         end
     end
