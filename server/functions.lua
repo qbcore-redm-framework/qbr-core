@@ -40,6 +40,15 @@ exports('GetConfig', function()
     return QBConfig
 end)
 
+function GetPlayers()
+    local sources = {}
+    for k, v in pairs(QBCore.Players) do
+        sources[#sources+1] = k
+    end
+    return sources
+end
+exports('GetPlayers', GetPlayers)
+
 -- Returns the entire player object
 exports('GetQBPlayers', function()
     return QBCore.Players
