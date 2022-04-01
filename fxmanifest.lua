@@ -23,6 +23,7 @@ client_scripts {
 	'client/events.lua',
 	'client/notify.js',
 	'client/drawtxt.lua',
+	'client/prompts.lua'
 }
 
 server_scripts {
