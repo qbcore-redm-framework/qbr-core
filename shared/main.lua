@@ -46,6 +46,38 @@ QBShared.Round = function(value, numDecimalPlaces)
 end
 exports('Round', QBShared.Round)
 
+-- Shared
+
+exports('GetGangs', function()
+    return QBShared.Gangs
+end)
+
+exports('GetHorses', function()
+    return QBShared.Horses
+end)
+
+exports('GetItem', function(item)
+    if QBShared.Items[item] then
+        return QBShared.Items[item]
+    end
+end)
+
+exports('GetItems', function()
+    return QBShared.Items
+end)
+
+exports('GetJobs', function()
+    return QBShared.Jobs
+end)
+
+exports('GetVehicles', function()
+    return QBShared.Vehicles
+end)
+
+exports('GetWeapons', function()
+    return QBShared.Weapons
+end)
+
 -- QBShared.ChangeVehicleExtra = function (vehicle, extra, enable)
 -- 	if DoesExtraExist(vehicle, extra) then
 -- 		if enable then

@@ -4,42 +4,6 @@ QBCore.Players = {}
 QBCore.UseableItems = {}
 QBCore.ServerCallbacks = {}
 
--- Shared
-
-exports('GetGangs', function()
-    return QBShared.Gangs
-end)
-
-exports('GetHorses', function()
-    return QBShared.Horses
-end)
-
-exports('GetItem', function(item)
-    if QBShared.Items[item] then
-        return QBShared.Items[item]
-    end
-end)
-
-exports('GetItems', function()
-    return QBShared.Items
-end)
-
-exports('GetJobs', function()
-    return QBShared.Jobs
-end)
-
-exports('GetVehicles', function()
-    return QBShared.Vehicles
-end)
-
-exports('GetWeapons', function()
-    return QBShared.Weapons
-end)
-
-exports('GetConfig', function()
-    return QBConfig
-end)
-
 function GetPlayers()
     local sources = {}
     for k, v in pairs(QBCore.Players) do

@@ -106,3 +106,7 @@ QBConfig.Levels = {
         [20] = 1000
     },
 }
+
+exports('GetConfig', function()
+    return QBConfig
+end)
