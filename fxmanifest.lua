@@ -32,7 +32,8 @@ server_scripts {
 	'server/functions.lua',
 	'server/player.lua',
 	'server/events.lua',
-	'server/commands.lua'
+	'server/commands.lua',
+	'server/exports.lua'
 }
 
 ui_page 'html/index.html'
@@ -45,7 +46,6 @@ files {
 
 dependencies {
 	'oxmysql',
-	--'connectqueue'
 }
 
 lua54 'yes'

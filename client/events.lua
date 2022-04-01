@@ -181,3 +181,16 @@ RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
         QBCore.ServerCallbacks[name] = nil
     end
 end)
+
+-- Listen to Shared being updated
+RegisterNetEvent('QBCore:Client:OnSharedUpdate', function(tableName, key, value)
+    QBCore.Shared[tableName][key] = value
+    TriggerEvent('QBCore:Client:UpdateObject')
+end)
+
+RegisterNetEvent('QBCore:Client:OnSharedUpdateMultiple', function(tableName, values)
+    for key, value in pairs(values) do
+        QBCore.Shared[tableName][key] = value
+    end
+    TriggerEvent('QBCore:Client:UpdateObject')
+end)
