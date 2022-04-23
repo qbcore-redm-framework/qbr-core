@@ -5,7 +5,8 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     ShutdownLoadingScreenNui()
     LocalPlayer.state:set('isLoggedIn', true, false)
     if QBConfig.EnablePVP then
-        NetworkSetFriendlyFireOption(true)
+        Citizen.InvokeNative(0xF808475FA571D823, true)
+        SetRelationshipBetweenGroups(5, `PLAYER`, `PLAYER`)
     end
     if QBConfig.Player.RevealMap then
 		SetMinimapHideFow(true)
