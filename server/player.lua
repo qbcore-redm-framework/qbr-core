@@ -500,6 +500,10 @@ local function CheckPlayerData(source, PlayerData)
 		['mining'] = 0
 	}
 
+    PlayerData.metadata['licences'] = PlayerData.metadata['licences'] or {
+        ['weapon'] = false
+    }
+
 	PlayerData.metadata['levels'] = PlayerData.metadata['levels'] or {
 		['main'] = 0,
 		['herbalism'] = 0,
