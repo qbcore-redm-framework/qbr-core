@@ -239,6 +239,32 @@ exports('SpawnVehicle', function(model, cb, coords, isnetworked)
     end
 end)
 
+
+-- Function for Progressbar ( Missing Function export )
+exports('Progressbar', function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
+    exports['progressbar']:Progress({
+        name = name:lower(),
+        duration = duration,
+        label = label,
+        useWhileDead = useWhileDead,
+        canCancel = canCancel,
+        controlDisables = disableControls,
+        animation = animation,
+        prop = prop,
+        propTwo = propTwo,
+    }, function(cancelled)
+        if not cancelled then
+            if onFinish then
+                onFinish()
+            end
+        else
+            if onCancel then
+                onCancel()
+            end
+        end
+    end)
+end)
+
 -- Notification Function (can use direct export)
 
 local function LoadTexture(dict)
