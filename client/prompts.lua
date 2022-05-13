@@ -194,7 +194,7 @@ CreateThread(function()
         Wait(1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 2)
-        --Citizen.InvokeNative(0xFC094EF26DD153FA, 3)
+        Citizen.InvokeNative(0xFC094EF26DD153FA, 3)
     end
 end)
 
