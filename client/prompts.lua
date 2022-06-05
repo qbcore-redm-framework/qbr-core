@@ -30,6 +30,36 @@ local function createPromptGroup(group, label, coords, prompts)
     end
 end
 
+local function getPrompt()
+    if Prompts then 
+    return Prompts
+    end
+end
+
+local function getPromptGroup()
+    if PromptGroups then 
+    return PromptGroups
+    end
+end
+
+
+local function deletePrompt(name)
+    if Prompts then
+        Citizen.InvokeNative(0x8A0FB4D03A630D21, Prompts[name].prompt, false)
+        Citizen.InvokeNative(0x71215ACCFDE075EE, Prompts[name].prompt, false)
+        Prompts[name] = nil
+    end
+end
+
+local function deletePromptGroup(name)
+    if PromptGroups then
+        Citizen.InvokeNative(0x8A0FB4D03A630D21, PromptGroups[name].prompt, false)
+        Citizen.InvokeNative(0x71215ACCFDE075EE, PromptGroups[name].prompt, false)
+        PromptGroups[name] = nil
+    end
+end
+
+
 local function executeOptions(options)
     if (options.type == 'client') then
         if (options.args == nil) then
@@ -168,5 +198,10 @@ CreateThread(function()
     end
 end)
 
+
 exports('createPrompt', createPrompt)
 exports('createPromptGroup', createPromptGroup)
+exports('getPrompt', getPrompt)
+exports('getPromptGroup',getPromptGroup)
+exports('deletePrompt', deletePrompt)
+exports('deletePromptGroup',deletePromptGroup)
