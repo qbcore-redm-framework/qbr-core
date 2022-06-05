@@ -63,7 +63,7 @@ AddCommand('tp', 'TP To Player or Coords (Admin Only)', { { name = 'id/x', help 
             local coords = GetEntityCoords(target)
             TriggerClientEvent('QBCore:Command:TeleportToPlayer', src, coords)
         else
-            TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+            TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
         end
     else
         if args[1] and args[2] and args[3] then
@@ -73,10 +73,10 @@ AddCommand('tp', 'TP To Player or Coords (Admin Only)', { { name = 'id/x', help 
             if (x ~= 0) and (y ~= 0) and (z ~= 0) then
                 TriggerClientEvent('QBCore:Command:TeleportToCoords', src, x, y, z)
             else
-                TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.wrong_format'), 2000, 0, 'mp_lobby_textures', 'cross')
+                TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.wrong_format'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
             end
         else
-            TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.missing_args'), 2000, 0, 'mp_lobby_textures', 'cross')
+            TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.missing_args'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
         end
     end
 end, 'admin')
@@ -101,7 +101,7 @@ AddCommand('addpermission', 'Give Player Permissions (God Only)', { { name = 'id
     if Player then
         AddPermission(Player.PlayerData.source, permission)
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'god')
 
@@ -112,7 +112,7 @@ AddCommand('removepermission', 'Remove Players Permissions (God Only)', { { name
     if Player then
         RemovePermission(Player.PlayerData.source, permission)
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'god')
 
@@ -146,7 +146,7 @@ AddCommand('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', hel
     if Player then
         Player.Functions.AddMoney(tostring(args[2]), tonumber(args[3]))
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'god')
 
@@ -156,7 +156,7 @@ AddCommand('setmoney', 'Set Players Money Amount (Admin Only)', { { name = 'id',
     if Player then
         Player.Functions.SetMoney(tostring(args[2]), tonumber(args[3]))
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'god')
 
@@ -167,12 +167,12 @@ AddCommand("givexp", "Give A Player Xp (Admin Only)", {{name="id", help="Player 
 	if Player then
 		if Player.PlayerData.metadata["xp"][tostring(args[2])] then
 			Player.Functions.AddXp(tostring(args[2]), tonumber(args[3]))
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_added'), "primary")
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 2000, 0, 'mp_lobby_textures', 'cross')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	else
-		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 	end
 end, 'god')
 
@@ -181,12 +181,12 @@ AddCommand("removexp", "Give A Player Xp (Admin Only)", {{name="id", help="Playe
 	if Player then
 		if Player.PlayerData.metadata["xp"][tostring(args[2])] then
 			Player.Functions.RemoveXp(tostring(args[2]), tonumber(args[3]))
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_removed'), "primary")
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_removed'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 2000, 0, 'mp_lobby_textures', 'cross')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	else
-		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 	end
 end, 'god')
 
@@ -195,9 +195,9 @@ AddCommand("xp", "Check How Much Xp You Have", {{name="skill", help="Type of ski
 	local Xp = Player.PlayerData.metadata["xp"][tostring(args[1])]
 	if Player then
 		if Xp then
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_info', {value = Xp, value2 = tostring(args[1])}), "primary")
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.xp_info', {value = Xp, value2 = tostring(args[1])}), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 2000, 0, 'mp_lobby_textures', 'cross')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	end
 end, 'god')
@@ -207,9 +207,9 @@ AddCommand("level", "Check Which Level You Are", {{name="skill", help="Type of s
 	local Level = Player.PlayerData.metadata["levels"][tostring(args[1])]
 	if Player then
 		if Level then
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_info', {value = Level, value2 = tostring(args[1])}), 2000, 0, 'hud_textures', 'check')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_info', {value = Level, value2 = tostring(args[1])}), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 2000, 0, 'mp_lobby_textures', 'cross')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	end
 end, 'god')
@@ -219,7 +219,7 @@ end, 'god')
 AddCommand('job', 'Check Your Job', {}, false, function(source)
     local src = source
     local PlayerJob = GetPlayer(src).PlayerData.job
-    TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('info.job_info', {value = PlayerJob.label, value2 = PlayerJob.grade.name, value3 = PlayerJob.onduty}), 2000, 0, 'toasts_mp_generic', 'butcher_table_production')
+    TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('info.job_info', {value = PlayerJob.label, value2 = PlayerJob.grade.name, value3 = PlayerJob.onduty}), 5000, 0, 'toasts_mp_generic', 'butcher_table_production', 'COLOR_WHITE')
 end, 'user')
 
 AddCommand('setjob', 'Set A Players Job (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'job', help = 'Job name' }, { name = 'grade', help = 'Grade' } }, true, function(source, args)
@@ -228,7 +228,7 @@ AddCommand('setjob', 'Set A Players Job (Admin Only)', { { name = 'id', help = '
     if Player then
         Player.Functions.SetJob(tostring(args[2]), tonumber(args[3]))
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'admin')
 
@@ -237,7 +237,7 @@ end, 'admin')
 AddCommand('gang', 'Check Your Gang', {}, false, function(source)
     local src = source
     local PlayerGang = GetPlayer(source).PlayerData.gang
-    TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('info.gang_info', {value = PlayerGang.label, value2 = PlayerGang.grade.name}))
+    TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('info.gang_info', {value = PlayerGang.label, value2 = PlayerGang.grade.name}), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 end, 'user')
 
 AddCommand('setgang', 'Set A Players Gang (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'gang', help = 'Name of a gang' }, { name = 'grade', help = 'Grade' } }, true, function(source, args)
@@ -246,7 +246,7 @@ AddCommand('setgang', 'Set A Players Gang (Admin Only)', { { name = 'id', help =
     if Player then
         Player.Functions.SetGang(tostring(args[2]), tonumber(args[3]))
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'admin')
 
@@ -259,7 +259,7 @@ AddCommand('clearinv', 'Clear Players Inventory (Admin Only)', { { name = 'id', 
     if Player then
         Player.Functions.ClearInventory()
     else
-        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 2000, 0, 'mp_lobby_textures', 'cross')
+        TriggerClientEvent('QBCore:Notify', src, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end, 'god')
 

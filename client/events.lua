@@ -38,7 +38,7 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
     local GetGroundZAndNormalFor_3dCoord = GetGroundZAndNormalFor_3dCoord
 
     if not IsWaypointActive() then
-        Notify(9, 'No Waypoint Set', 2000, 0, 'mp_lobby_textures', 'cross')
+        Notify(9, 'No Waypoint Set', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
         return 'marker'
     end
 
@@ -107,12 +107,12 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
         -- If we can't find the coords, set the coords to the old ones.
         -- We don't unpack them before since they aren't in a loop and only called once.
         SetEntityCoords(ped, oldCoords['x'], oldCoords['y'], oldCoords['z'] - 1.0)
-        Notify(9, 'Error teleporting', 2000, 0, 'mp_lobby_textures', 'cross')
+        Notify(9, 'Error teleporting', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 
     -- If Z coord was found, set coords in found coords.
     SetEntityCoords(ped, x, y, groundZ)
-    Notify(9, 'Teleported', 2000, 0, 'hud_textures', 'check')
+    Notify(9, 'Teleported', 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 end)
 
 -- Vehicle | Horse Events
@@ -154,7 +154,7 @@ RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
 		Citizen.InvokeNative(0xAAB86462966168CE, npc, 1)
         Wait(500)
     else
-		Notify(9, 'Model not found', 2000, 0, 'mp_lobby_textures', 'cross')
+		Notify(9, 'Model not found', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end)
 

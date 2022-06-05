@@ -321,7 +321,7 @@ local function CreatePlayer(PlayerData)
         local totalWeight = GetTotalWeight(self.PlayerData.items)
         local itemInfo = QBShared.Items[item:lower()]
         if itemInfo == nil then
-            TriggerClientEvent('QBCore:Notify', self.PlayerData.source, Lang:t('error.item_not_exist'), 2000, 0, 'mp_lobby_textures', 'cross')
+            TriggerClientEvent('QBCore:Notify', self.PlayerData.source, Lang:t('error.item_not_exist'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
             return
         end
         local amount = tonumber(amount)
@@ -353,7 +353,7 @@ local function CreatePlayer(PlayerData)
                 end
             end
         else
-            TriggerClientEvent('QBCore:Notify', self.PlayerData.source, Lang:t('error.too_heavy'), 2000, 0, 'mp_lobby_textures', 'cross')
+            TriggerClientEvent('QBCore:Notify', self.PlayerData.source, Lang:t('error.too_heavy'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
         end
         return false
     end
@@ -622,7 +622,7 @@ local function PaycheckLoop()
                 local account = exports['qb-bossmenu']:GetAccount(Player.PlayerData.job.name)
                 if account ~= 0 then -- Checks if player is employed by a society
                     if account < payment then -- Checks if company has enough money to pay society
-                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('error.company_too_poor'), 2000, 0, 'mp_lobby_textures', 'cross')
+                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('error.company_too_poor'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
                     else
                         Player.Functions.AddMoney('bank', payment)
                         TriggerEvent('qb-bossmenu:server:removeAccountMoney', Player.PlayerData.job.name, payment)
