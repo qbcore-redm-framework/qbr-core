@@ -239,7 +239,19 @@ exports('SpawnVehicle', function(model, cb, coords, isnetworked)
     end
 end)
 
+exports('GetPlate',function(vehicle)
+    if vehicle == 0 then return end
+    return exports['qbr-core']:Trim(Citizen.InvokeNative(0xE8522D58,vehicle))
+end)
 
+exports("DeleteVehicle",function(vehicle)
+    SetEntityAsMissionEntity(vehicle, true, true)
+    DeleteVehicle(vehicle)
+end)
+
+
+
+-- Notification Function (can use direct export)
 -- Function for Progressbar ( Missing Function export )
 exports('Progressbar', function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
     exports['progressbar']:Progress({
@@ -264,8 +276,6 @@ exports('Progressbar', function(name, label, duration, useWhileDead, canCancel, 
         end
     end)
 end)
-
--- Notification Function (can use direct export)
 
 local function LoadTexture(dict)
     if Citizen.InvokeNative(0x7332461FC59EB7EC, dict) then
