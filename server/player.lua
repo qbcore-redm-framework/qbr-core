@@ -510,6 +510,8 @@ local function CheckPlayerData(source, PlayerData)
 		['mining'] = 0
 	}
 
+    PlayerData.metadata['optin'] = PlayerData.metadata['optin'] or true
+
     -- Job
     PlayerData.job = PlayerData.job or {}
     PlayerData.job.name = PlayerData.job.name or 'unemployed'
