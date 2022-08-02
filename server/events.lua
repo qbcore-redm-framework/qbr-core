@@ -13,14 +13,14 @@ local function IsPlayerBanned(source)
     local retval = false
     local message = ''
     local plicense = GetIdentifier(source, 'license')
-    local result = MySQL.Sync.fetchSingle('SELECT * FROM bans WHERE license = ?', { plicense })
+    local result = MySQL.single.await('SELECT * FROM bans WHERE license = ?', { plicense })
     if result then
         if os.time() < result.expire then
             retval = true
             local timeTable = os.date('*t', tonumber(result.expire))
             message = 'You have been banned from the server:\n' .. result[1].reason .. '\nYour ban expires ' .. timeTable.day .. '/' .. timeTable.month .. '/' .. timeTable.year .. ' ' .. timeTable.hour .. ':' .. timeTable.min .. '\n'
         else
-            MySQL.Async.execute('DELETE FROM bans WHERE id = ?', { result[1].id })
+            MySQL.update('DELETE FROM bans WHERE id = ?', { result[1].id })
         end
     end
     return retval, message
