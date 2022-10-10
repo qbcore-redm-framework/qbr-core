@@ -207,12 +207,12 @@ AddCommand("givelevel", "Set player level [ADMIN]", {{name="id", help="Player ID
 	if Player then
 		if Player.PlayerData.metadata["levels"][tostring(args[2])] then
 			Player.Functions.AddLevel(tostring(args[2]), tonumber(args[3]))
-			TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	else
-		TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 	end
 end, 'god')
 
@@ -221,12 +221,12 @@ AddCommand("removelevel", "Remove player level [ADMIN]", {{name="id", help="Play
 	if Player then
 		if Player.PlayerData.metadata["levels"][tostring(args[2])] then
 			Player.Functions.RemoveLevel(tostring(args[2]), tonumber(args[3]))
-			TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 		else
-			TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 		end
 	else
-		TriggerClientEvent('RXCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
 	end
 end, 'god')
 
