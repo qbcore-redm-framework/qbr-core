@@ -20,7 +20,8 @@ local Translations = {
         level_info = 'Your level is %{value} in the skill: %{value2}',
         xp_info = 'You have %{value}xp in the skill: %{value2}',
         xp_removed = 'Player has been stripped of some xp',
-        xp_added = 'Player has been granted some generous xp'
+        xp_added = 'Player has been granted some generous xp',
+        level_added = 'Player has been granted level'
     }
 }
 
