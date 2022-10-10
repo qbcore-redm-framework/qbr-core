@@ -317,6 +317,40 @@ local function CreatePlayer(PlayerData)
 		return false
 	end
 
+    self.Functions.AddLevel = function(level, amount)
+		local level = level:lower()
+		local amount = tonumber(amount)
+		if self.PlayerData.metadata['levels'][level] and amount > 0 then
+			self.PlayerData.metadata['levels'][level] = self.PlayerData.metadata['levels'][level] + amount
+			self.Functions.UpdateLevelData(level)
+			self.Functions.UpdatePlayerData()
+            TriggerEvent('qbr-log:server:CreateLog', 'levels', 'AddLevel', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..' level in the skill: '..skill..'. Their current level is: '..self.PlayerData.metadata['levels'][level])
+			return true
+		end
+		return false
+	end
+
+	self.Functions.RemoveLevel = function(level, amount)
+		local level = level:lower()
+		local amount = tonumber(amount)
+		if self.PlayerData.metadata['levels'][level] and amount > 0 then
+			self.PlayerData.metadata['levels'][level] = self.PlayerData.metadata['levels'][level] - amount
+			self.Functions.UpdateLevelData(level)
+			self.Functions.UpdatePlayerData()
+            TriggerEvent('qbr-log:server:CreateLog', 'levels', 'AddLevel', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..' level in the skill: '..skill..'. Their current level is: '..self.PlayerData.metadata['levels'][level])
+			return true
+		end
+		return false
+	end
+
+    self.Functions.UpdateLevelData = function(skill, vall)
+        local skill = skill:lower()
+        if vall ~= nil then
+            self.PlayerData.metadata[skill] = vall
+            self.Functions.UpdatePlayerData()
+        end
+    end
+
     self.Functions.AddItem = function(item, amount, slot, info)
         local totalWeight = GetTotalWeight(self.PlayerData.items)
         local itemInfo = QBShared.Items[item:lower()]
