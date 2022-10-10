@@ -202,6 +202,34 @@ AddCommand("xp", "Check How Much Xp You Have", {{name="skill", help="Type of ski
 	end
 end, 'god')
 
+AddCommand("givelevel", "Set player level [ADMIN]", {{name="id", help="Player ID"},{name="level", help="Type of skill (mining, etc"}, {name="amount", help="Amount of level"}}, true, function(source, args)
+	local Player = GetPlayer(tonumber(args[1]))
+	if Player then
+		if Player.PlayerData.metadata["levels"][tostring(args[2])] then
+			Player.Functions.AddLevel(tostring(args[2]), tonumber(args[3]))
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
+		else
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+		end
+	else
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+	end
+end, 'god')
+
+AddCommand("removelevel", "Remove player level [ADMIN]", {{name="id", help="Player ID"},{name="level", help="Type of skill (mining, etc"}, {name="amount", help="Amount of level"}}, true, function(source, args)
+	local Player = GetPlayer(tonumber(args[1]))
+	if Player then
+		if Player.PlayerData.metadata["levels"][tostring(args[2])] then
+			Player.Functions.RemoveLevel(tostring(args[2]), tonumber(args[3]))
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('info.level_added'), 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
+		else
+			TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.no_skill'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+		end
+	else
+		TriggerClientEvent('QBCore:Notify', source, 9, Lang:t('error.not_online'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+	end
+end, 'god')
+
 AddCommand("level", "Check Which Level You Are", {{name="skill", help="Type of skill (mining, etc)"}}, true, function(source, args)
 	local Player = GetPlayer(source)
 	local Level = Player.PlayerData.metadata["levels"][tostring(args[1])]
