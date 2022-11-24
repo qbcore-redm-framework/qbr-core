@@ -140,7 +140,7 @@ end, 'user')
 
 -- Money
 
-AddCommand('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, crypto)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
+AddCommand('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, rols)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
     local src = source
     local Player = GetPlayer(tonumber(args[1]))
     if Player then
@@ -150,7 +150,7 @@ AddCommand('givemoney', 'Give A Player Money (Admin Only)', { { name = 'id', hel
     end
 end, 'god')
 
-AddCommand('setmoney', 'Set Players Money Amount (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, crypto)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
+AddCommand('setmoney', 'Set Players Money Amount (Admin Only)', { { name = 'id', help = 'Player ID' }, { name = 'moneytype', help = 'Type of money (cash, bank, rols)' }, { name = 'amount', help = 'Amount of money' } }, true, function(source, args)
     local src = source
     local Player = GetPlayer(tonumber(args[1]))
     if Player then
