@@ -14,7 +14,8 @@ shared_scripts {
 	'shared/jobs.lua',
 	'shared/vehicles.lua',
 	'shared/gangs.lua',
-	'shared/weapons.lua'
+	'shared/weapons.lua',
+	'shared/horse.lua'
 }
 
 client_scripts {

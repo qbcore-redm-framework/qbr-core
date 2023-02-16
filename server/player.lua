@@ -584,11 +584,11 @@ local playertables = { -- Add tables as needed
     { table = 'bank_accounts' },
     { table = 'bank_statements' },
     { table = 'farming' },
-    { table = 'horses' },
     { table = 'players' },
     { table = 'playerskins' },
+    { table = 'player_horses' },
     { table = 'player_outfits' },
-    { table = 'wagons' },
+    { table = 'player_wagons' },
     { table = 'wagon_water' }
 }
 
