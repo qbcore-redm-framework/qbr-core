@@ -1,5 +1,6 @@
 QBCore = {}
 QBCore.Blips = {}
+QBCore.Peds = {}
 QBCore.PlayerData = {}
 QBCore.ServerCallbacks = {}
 
@@ -71,6 +72,33 @@ function TriggerCallback(name, cb, ...)
     TriggerServerEvent('QBCore:Server:TriggerCallback', name, ...)
 end
 exports('TriggerCallback', TriggerCallback)
+
+-- Peds
+
+local function LoadModel(model)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Wait(50)
+    end
+end
+exports('LoadModel', LoadModel)
+
+exports('SpawnPed', function(name, model, x, y, z, w)
+    if type(model) == 'string' then model = GetHashKey(model) end
+    LoadModel(model)
+    QBCore.Peds[name] = CreatePed(model, x, y, z, w, true, true, 0, 0)
+    Citizen.InvokeNative(0x283978A15512B2FE, QBCore.Peds[name], true)
+    FreezeEntityPosition(QBCore.Peds[name], true)
+    SetEntityInvincible(QBCore.Peds[name], true)
+    SetBlockingOfNonTemporaryEvents(QBCore.Peds[name], true)
+    SetEntityCanBeDamagedByRelationshipGroup(QBCore.Peds[name], false, `PLAYER`)
+    SetEntityAsMissionEntity(QBCore.Peds[name], true, true)
+end)
+
+exports('RemovePed', function(name)
+    DeletePed(QBCore.Peds[name])
+    QBCore.Peds[name] = nil
+end)
 
 -- Getters
 
