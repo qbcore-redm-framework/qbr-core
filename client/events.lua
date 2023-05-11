@@ -147,7 +147,7 @@ RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
         while not HasModelLoaded(animalHash) do Wait(100) end
 		local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 4.0, 0.5))
         local npc = CreatePed(animalHash, x, y, z, GetEntityHeading(ped) + 90, 1, 0)
-        SetRandomOutfitVariation(npc, true)
+        Citizen.InvokeNative(0x283978A15512B2FE, npc, true)
         SetPedScale(npc, num)
 		while not IsPedReadyToRender(npc) do Wait(0) end
 		Citizen.InvokeNative(0x704C908E9C405136, npc)
