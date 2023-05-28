@@ -1,4 +1,5 @@
 QBCore = {}
+QBCore.Blips = {}
 QBCore.Peds = {}
 QBCore.PlayerData = {}
 QBCore.ServerCallbacks = {}
@@ -347,3 +348,21 @@ function Notify(id, text, duration, subtext, dict, icon, color)
     end
 end
 exports('Notify', Notify)
+
+-- Blip Functions
+exports('CreateBlip', function(uniqueId, label, x, y, z, sprite, scale, rotation, radius)
+    if type(sprite) == 'string' then sprite = GetHashKey(sprite) end
+    if radius then
+        QBCore.Blips[uniqueId] = Citizen.InvokeNative(0x45F13B7E0A15C880, 1664425300, x, y, z, radius)
+    else
+        QBCore.Blips[uniqueId] = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, x, y, z)
+    end
+    if label then Citizen.InvokeNative(0x9CB1A1623062F402, QBCore.Blips[uniqueId], label) end
+    if sprite then SetBlipSprite(QBCore.Blips[uniqueId], sprite) end
+    if scale then SetBlipScale(QBCore.Blips[uniqueId], scale) end
+    if rotation then SetBlipRotation(QBCore.Blips[uniqueId], rotation) end
+end)
+
+exports('DeleteBlip', function(uniqueId)
+    RemoveBlip(QBCore.Blips[uniqueId])
+end)
