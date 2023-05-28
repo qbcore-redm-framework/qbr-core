@@ -405,6 +405,12 @@ local function CreatePlayer(PlayerData)
         self.PlayerData.items = {}
         self.Functions.UpdatePlayerData()
         TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'ClearInventory', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** inventory cleared')
+        -- Clear ped wheel inventory weapons
+        local ped = GetPlayerPed(self.PlayerData.source)
+        for i = 10,1,-1 do 
+            RemoveAllPedWeapons(ped, true)
+            SetCurrentPedWeapon(ped, 'none', true)
+        end
     end
 
     self.Functions.GetItemByName = function(item)
