@@ -1,9 +1,11 @@
 -- Event Handler
+GlobalState['Count:Players'] = 0
 
 AddEventHandler('playerDropped', function()
     local src = source
-    if not QBCore.Players[src] then return end
     local Player = QBCore.Players[src]
+    GlobalState['Count:Players'] = GetNumPlayerIndices()
+    if not Player then return end
     TriggerEvent('qb-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(src) .. '** (' .. Player.PlayerData.license .. ') left..')
     Player.Functions.Save()
     QBCore.Players[src] = nil
@@ -87,6 +89,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
     elseif isLicenseAlreadyInUse then
         deferrals.done('Duplicate Rockstar License Found')
     else
+        GlobalState['Count:Players'] = GetNumPlayerIndices() + 1
         deferrals.done()
         if QBConfig.UseConnectQueue then
             Wait(1000)
