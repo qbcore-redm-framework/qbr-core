@@ -59,13 +59,18 @@ local function deletePromptGroup(name)
     end
 end
 
-
 local function executeOptions(options)
     if (options.type == 'client') then
         if (options.args == nil) then
             TriggerEvent(options.event)
         else
             TriggerEvent(options.event, table.unpack(options.args))
+        end
+    elseif (options.type == 'callback') then
+        if (options.args == nil) then
+            return options.event()
+        else
+            return options.event(table.unpack(options.args))
         end
     else
         if (options.args == nil) then
