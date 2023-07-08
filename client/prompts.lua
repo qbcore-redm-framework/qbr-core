@@ -165,26 +165,32 @@ CreateThread(function()
                 local distance = #(coords - v.coords)
                 local promptGroup = PromptGroups[k].group
                 if (distance < 1.5) then
-                    sleep = 1
+                    sleep = 3
                     if (PromptGroups[k].created == false) then
                         setupPromptGroup(PromptGroups[k])
                     end
-
                     Citizen.InvokeNative(0xC65A45D4453C2627, promptGroup, CreateVarString(10, 'LITERAL_STRING', PromptGroups[k].label), 1)
-
                     for i,j in pairs(PromptGroups[k].prompts) do
                         if (Citizen.InvokeNative(0xE0F65F0640EF0617, j.prompt)) then
-                            executeOptions(j.options)
-                            j.prompt = nil
-                            PromptGroups[k].active = false
+                            executeOptions(j)
+                            for _, n in pairs(PromptGroups[k].prompts) do
+                                Citizen.InvokeNative(0x8A0FB4D03A630D21, n.prompt, false)
+                                Citizen.InvokeNative(0x71215ACCFDE075EE, n.prompt, false)
+                                n.prompt = nil
+                            end
+                            PromptGroups[k].created = false
+                            break
                         end
+
                     end
                 else
-                    if (PromptGroups[k].active) then
+                    if (PromptGroups[k].created) then
                         for i,j in pairs(PromptGroups[k].prompts) do
+                            Citizen.InvokeNative(0x8A0FB4D03A630D21, j.prompt, false)
+                            Citizen.InvokeNative(0x71215ACCFDE075EE, j.prompt, false)
                             j.prompt = nil
                         end
-                        Prompts[k].active = false
+                        PromptGroups[k].created = false
                     end
                 end
             end
@@ -199,7 +205,7 @@ CreateThread(function()
         Wait(1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 1)
         Citizen.InvokeNative(0xFC094EF26DD153FA, 2)
-        Citizen.InvokeNative(0xFC094EF26DD153FA, 3)
+        --Citizen.InvokeNative(0xFC094EF26DD153FA, 3) -- Disables The Looting
     end
 end)
 
