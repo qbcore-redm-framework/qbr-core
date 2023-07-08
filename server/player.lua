@@ -133,11 +133,14 @@ local function CreatePlayer(PlayerData)
     self.Functions = {}
     self.PlayerData = PlayerData
 
-    self.Functions.UpdatePlayerData = function(dontUpdateChat)
+    self.Functions.UpdatePlayerItems = function(slot)
+        TriggerClientEvent('qbr-inventory:client:UpdateItems', self.PlayerData.source, slot, self.PlayerData.items[slot])
+    end
+
+    self.Functions.UpdatePlayerData = function(UpdateChat)
         TriggerClientEvent('QBCore:Player:SetPlayerData', self.PlayerData.source, self.PlayerData)
-        if dontUpdateChat == nil then
-            RefreshCommands(self.PlayerData.source)
-        end
+        if not UpdateChat then return end
+        RefreshCommands(self.PlayerData.source)
     end
 
     self.Functions.SetJob = function(job, grade)
@@ -205,16 +208,19 @@ local function CreatePlayer(PlayerData)
     end
 
     self.Functions.SetMetaData = function(meta, val)
-        local meta = meta:lower()
-        if val ~= nil then
-            self.PlayerData.metadata[meta] = val
-            self.Functions.UpdatePlayerData()
+        if type(meta) == 'table' then
+            for k, v in pairs(meta) do
+                self.PlayerData.metadata[k:lower()] = v
+            end
+        else
+            self.PlayerData.metadata[meta:lower()] = val
         end
+        self.Functions.UpdatePlayerData()
     end
 
     self.Functions.AddJobReputation = function(amount)
         local amount = tonumber(amount)
-        self.PlayerData.metadata['jobrep'][self.PlayerData.job.name] = self.PlayerData.metadata['jobrep'][self.PlayerData.job.name] + amount
+        self.PlayerData.metadata['jobrep'][self.PlayerData.job.name] += amount
         self.Functions.UpdatePlayerData()
     end
 
@@ -226,7 +232,7 @@ local function CreatePlayer(PlayerData)
             return
         end
         if self.PlayerData.money[moneytype] then
-            self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] + amount
+            self.PlayerData.money[moneytype] += amount
             self.Functions.UpdatePlayerData()
             if amount > 100000 then
                 TriggerEvent('qb-log:server:CreateLog', 'playermoney', 'AddMoney', 'lightgreen', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** $' .. amount .. ' (' .. moneytype .. ') added, new ' .. moneytype .. ' balance: ' .. self.PlayerData.money[moneytype], true)
@@ -254,7 +260,7 @@ local function CreatePlayer(PlayerData)
                     end
                 end
             end
-            self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
+            self.PlayerData.money[moneytype] -= amount
             self.Functions.UpdatePlayerData()
             if amount > 100000 then
                 TriggerEvent('qbr-log:server:CreateLog', 'playermoney', 'RemoveMoney', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** $' .. amount .. ' (' .. moneytype .. ') removed, new ' .. moneytype .. ' balance: ' .. self.PlayerData.money[moneytype], true)
@@ -295,7 +301,7 @@ local function CreatePlayer(PlayerData)
 		local skill = skill:lower()
 		local amount = tonumber(amount)
 		if self.PlayerData.metadata['xp'][skill] and amount > 0 then
-			self.PlayerData.metadata['xp'][skill] = self.PlayerData.metadata['xp'][skill] + amount
+			self.PlayerData.metadata['xp'][skill] += amount
 			self.Functions.UpdateLevelData(skill)
 			self.Functions.UpdatePlayerData()
 			TriggerEvent('qbr-log:server:CreateLog', 'levels', 'AddXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
@@ -308,7 +314,7 @@ local function CreatePlayer(PlayerData)
 		local skill = skill:lower()
 		local amount = tonumber(amount)
 		if self.PlayerData.metadata['xp'][skill] and amount > 0 then
-			self.PlayerData.metadata['xp'][skill] = self.PlayerData.metadata['xp'][skill] - amount
+			self.PlayerData.metadata['xp'][skill] -= amount
 			self.Functions.UpdateLevelData(skill)
 			self.Functions.UpdatePlayerData()
 			TriggerEvent('qbr-log:server:CreateLog', 'levels', 'RemoveXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** was stripped of: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
@@ -334,19 +340,19 @@ local function CreatePlayer(PlayerData)
         if (totalWeight + (itemInfo['weight'] * amount)) <= QBConfig.Player.MaxWeight then
             if (slot and self.PlayerData.items[slot]) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo['type'] == 'item' and not itemInfo['unique']) then
                 self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
-                self.Functions.UpdatePlayerData()
+                self.Functions.UpdatePlayerItems(slot)
                 TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** got item: [slot:' .. slot .. '], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount .. ', new total amount: ' .. self.PlayerData.items[slot].amount)
                 return true
             elseif (not itemInfo['unique'] and slot or slot and self.PlayerData.items[slot] == nil) then
                 self.PlayerData.items[slot] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = slot, combinable = itemInfo['combinable'] }
-                self.Functions.UpdatePlayerData()
+                self.Functions.UpdatePlayerItems(slot)
                 TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** got item: [slot:' .. slot .. '], itemname: ' .. self.PlayerData.items[slot].name .. ', added amount: ' .. amount .. ', new total amount: ' .. self.PlayerData.items[slot].amount)
                 return true
             elseif (itemInfo['unique']) or (not slot or slot == nil) or (itemInfo['type'] == 'weapon') then
                 for i = 1, QBConfig.Player.MaxInvSlots, 1 do
                     if self.PlayerData.items[i] == nil then
                         self.PlayerData.items[i] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = i, combinable = itemInfo['combinable'] }
-                        self.Functions.UpdatePlayerData()
+                        self.Functions.UpdatePlayerItems(i)
                         TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** got item: [slot:' .. i .. '], itemname: ' .. self.PlayerData.items[i].name .. ', added amount: ' .. amount .. ', new total amount: ' .. self.PlayerData.items[i].amount)
                         return true
                     end
@@ -364,12 +370,12 @@ local function CreatePlayer(PlayerData)
         if slot then
             if self.PlayerData.items[slot].amount > amount then
                 self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amount
-                self.Functions.UpdatePlayerData()
+                self.Functions.UpdatePlayerItems(slot)
                 TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount .. ', new total amount: ' .. self.PlayerData.items[slot].amount)
                 return true
             elseif self.PlayerData.items[slot].amount == amount then
                 self.PlayerData.items[slot] = nil
-                self.Functions.UpdatePlayerData()
+                self.Functions.UpdatePlayerItems(slot)
                 TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. item .. ', removed amount: ' .. amount .. ', item removed')
                 return true
             end
@@ -379,13 +385,13 @@ local function CreatePlayer(PlayerData)
             if slots then
                 for _, slot in pairs(slots) do
                     if self.PlayerData.items[slot].amount > amountToRemove then
-                        self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amountToRemove
-                        self.Functions.UpdatePlayerData()
+                        self.PlayerData.items[slot].amount -= amountToRemove
+                        self.Functions.UpdatePlayerItems(slot)
                         TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. self.PlayerData.items[slot].name .. ', removed amount: ' .. amount .. ', new total amount: ' .. self.PlayerData.items[slot].amount)
                         return true
                     elseif self.PlayerData.items[slot].amount == amountToRemove then
                         self.PlayerData.items[slot] = nil
-                        self.Functions.UpdatePlayerData()
+                        self.Functions.UpdatePlayerItems(slot)
                         TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. item .. ', removed amount: ' .. amount .. ', item removed')
                         return true
                     end
@@ -395,10 +401,14 @@ local function CreatePlayer(PlayerData)
         return false
     end
 
-    self.Functions.SetInventory = function(items, dontUpdateChat)
-        self.PlayerData.items = items
-        self.Functions.UpdatePlayerData(dontUpdateChat)
-        TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'SetInventory', 'blue', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** items set: ' .. json.encode(items))
+    self.Functions.SetInventory = function(data, slot)
+        if slot and tonumber(slot) then
+            self.PlayerData.items[slot] = data
+		else
+			self.PlayerData.items = data
+        	self.Functions.UpdatePlayerData()
+        	TriggerEvent('qbr-log:server:CreateLog', 'playerinventory', 'SetInventory', 'blue', '**' .. GetPlayerName(self.PlayerData.source) .. ' (citizenid: ' .. self.PlayerData.citizenid .. ' | id: ' .. self.PlayerData.source .. ')** items set: ' .. json.encode(data))
+        end
     end
 
     self.Functions.ClearInventory = function()
@@ -458,7 +468,7 @@ local function CheckPlayerData(source, PlayerData)
     PlayerData = PlayerData or {}
     PlayerData.source = source
     PlayerData.citizenid = PlayerData.citizenid or CreateCitizenId()
-    PlayerData.license = PlayerData.license or GetIdentifier(source, 'license')
+    PlayerData.license = PlayerData.license or GetPlayerIdentifierByType(source, 'license')
     PlayerData.name = GetPlayerName(source)
     PlayerData.cid = PlayerData.cid or 1
     PlayerData.money = PlayerData.money or {}
@@ -548,7 +558,7 @@ end
 exports('Login', function(source, citizenid, newData)
     if source then
         if citizenid then
-            local license = GetIdentifier(source, 'license')
+            local license = GetPlayerIdentifierByType(source, 'license')
             local PlayerData = MySQL.prepare.await('SELECT * FROM players where citizenid = ?', { citizenid })
             if PlayerData and license == PlayerData.license then
                 PlayerData.money = json.decode(PlayerData.money)
@@ -594,7 +604,7 @@ local playertables = { -- Add tables as needed
 }
 
 exports('DeleteCharacter', function(source, citizenid)
-    local license = GetIdentifier(source, 'license')
+    local license = GetPlayerIdentifierByType(source, 'license')
     local result = MySQL.scalar.await('SELECT license FROM players where citizenid = ?', { citizenid })
     if license == result then
         local query = "DELETE FROM %s WHERE citizenid = ?"
