@@ -11,21 +11,17 @@ AddEventHandler('playerDropped', function()
     QBCore.Players[src] = nil
 end)
 
-local function IsPlayerBanned(source)
-    local retval = false
-    local message = ''
-    local plicense = GetIdentifier(source, 'license')
+local function IsPlayerBanned(plicense)
     local result = MySQL.single.await('SELECT * FROM bans WHERE license = ?', { plicense })
-    if result then
-        if os.time() < result.expire then
-            retval = true
-            local timeTable = os.date('*t', tonumber(result.expire))
-            message = 'You have been banned from the server:\n' .. result[1].reason .. '\nYour ban expires ' .. timeTable.day .. '/' .. timeTable.month .. '/' .. timeTable.year .. ' ' .. timeTable.hour .. ':' .. timeTable.min .. '\n'
-        else
-            MySQL.query('DELETE FROM bans WHERE id = ?', { result[1].id })
-        end
+    if not result then return false end
+    if os.time() < result.expire then
+        local timeTable = os.date('*t', tonumber(result.expire))
+        return true, 'You have been banned from the server:\n' .. result.reason .. '\nYour ban expires ' .. timeTable.day .. '/' .. timeTable.month .. '/' .. timeTable.year .. ' ' .. timeTable.hour .. ':' .. timeTable.min .. '\n'
+    else
+        MySQL.query('DELETE FROM bans WHERE id = ?', { result.id })
+        return false
     end
-    return retval, message
+    return false
 end
 
 local function IsLicenseInUse(license)
@@ -75,7 +71,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
 
     deferrals.update(string.format('Hello %s. We are checking if you are banned.', name))
 
-    local isBanned, Reason = IsPlayerBanned(player)
+    local isBanned, Reason = IsPlayerBanned(license)
     local isLicenseAlreadyInUse = IsLicenseInUse(license)
 
     Wait(2500)
