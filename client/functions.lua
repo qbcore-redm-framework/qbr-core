@@ -4,32 +4,6 @@ QBCore.Peds = {}
 QBCore.PlayerData = {}
 QBCore.ServerCallbacks = {}
 
--- Shared
-
-exports('GetGangs', function()
-    return QBShared.Gangs
-end)
-
-exports('GetHorses', function()
-    return QBShared.Horses
-end)
-
-exports('GetItems', function()
-    return QBShared.Items
-end)
-
-exports('GetJobs', function()
-    return QBShared.Jobs
-end)
-
-exports('GetVehicles', function()
-    return QBShared.Vehicles
-end)
-
-exports('GetWeapons', function()
-    return QBShared.Weapons
-end)
-
 -- Player
 
 exports('GetPlayerData', function(cb)
