@@ -300,11 +300,17 @@ local function CreatePlayer(PlayerData)
     self.Functions.AddXp = function(skill, amount)
 		local skill = skill:lower()
 		local amount = tonumber(amount)
-		if self.PlayerData.metadata['xp'][skill] and amount > 0 then
+		if not amount or amount < 0 then return false end
+		if self.PlayerData.metadata['xp'][skill] then
 			self.PlayerData.metadata['xp'][skill] += amount
 			self.Functions.UpdateLevelData(skill)
 			self.Functions.UpdatePlayerData()
 			TriggerEvent('qbr-log:server:CreateLog', 'levels', 'AddXp', 'lightgreen', '**'..GetPlayerName(self.PlayerData.source) .. ' (citizenid: '..self.PlayerData.citizenid..' | id: '..self.PlayerData.source..')** has received: '..amount..'xp in the skill: '..skill..'. Their current xp amount is: '..self.PlayerData.metadata['xp'][skill])
+			return true
+		elseif QBConfig.Levels[skill] then
+			self.PlayerData.metadata['xp'][skill] = amount
+			self.Functions.UpdateLevelData(skill)
+			self.Functions.UpdatePlayerData()
 			return true
 		end
 		return false
