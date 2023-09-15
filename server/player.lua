@@ -513,7 +513,8 @@ local function CheckPlayerData(source, PlayerData)
     PlayerData.metadata['xp'] = PlayerData.metadata['xp'] or {
 		['main'] = 0,
 		['herbalism'] = 0,
-		['mining'] = 0
+		['mining'] = 0,
+		['hunting'] = 0
 	}
 
     PlayerData.metadata['licences'] = PlayerData.metadata['licences'] or {
@@ -523,7 +524,8 @@ local function CheckPlayerData(source, PlayerData)
 	PlayerData.metadata['levels'] = PlayerData.metadata['levels'] or {
 		['main'] = 0,
 		['herbalism'] = 0,
-		['mining'] = 0
+		['mining'] = 0,
+		['hunting'] = 0
 	}
 
     PlayerData.metadata['optin'] = PlayerData.metadata['optin'] or true
