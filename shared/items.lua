@@ -49,6 +49,7 @@ QBShared.Items = {
 	['ammo_rifle'] 				= {['name'] = 'ammo_rifle', 			['label'] = 'Ammo Rifle', 					['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Rifle Ammo'},
 	['ammo_pistol'] 			= {['name'] = 'ammo_pistol', 			['label'] = 'Ammo Pistol', 					['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Pistol Ammo'},
 	['ammo_shotgun'] 			= {['name'] = 'ammo_shotgun', 			['label'] = 'Ammo Shotgun', 				['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Shotgun Ammo'},
+	['ammo_22'] 				= {['name'] = 'ammo_22', 				['label'] = 'Ammo .22', 			 		['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = '.22 Ammo'},
 	['ammo_arrow'] 				= {['name'] = 'ammo_arrow', 			['label'] = 'Arrow', 						['weight'] = 200, 		['type'] = 'item',				['image'] = 'ammo_bullet_normal.png', 		['unique'] = false, 	['useable'] = true, 	['shouldClose'] = true,	  ['combinable'] = nil,		['level'] = 0, 		['description'] = 'Arrow'},
 
 	-- WEAPONS
