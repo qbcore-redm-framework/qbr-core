@@ -6,7 +6,7 @@ AddEventHandler('playerDropped', function()
     local Player = QBCore.Players[src]
     GlobalState['Count:Players'] = GetNumPlayerIndices()
     if not Player then return end
-    TriggerEvent('qb-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(src) .. '** (' .. Player.PlayerData.license .. ') left..')
+    TriggerEvent('qbr-log:server:CreateLog', 'joinleave', 'Dropped', 'red', '**' .. GetPlayerName(src) .. '** (' .. Player.PlayerData.license .. ') left..')
     Player.Functions.Save()
     QBCore.Players[src] = nil
 end)

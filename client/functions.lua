@@ -4,32 +4,6 @@ QBCore.Peds = {}
 QBCore.PlayerData = {}
 QBCore.ServerCallbacks = {}
 
--- Shared
-
-exports('GetGangs', function()
-    return QBShared.Gangs
-end)
-
-exports('GetHorses', function()
-    return QBShared.Horses
-end)
-
-exports('GetItems', function()
-    return QBShared.Items
-end)
-
-exports('GetJobs', function()
-    return QBShared.Jobs
-end)
-
-exports('GetVehicles', function()
-    return QBShared.Vehicles
-end)
-
-exports('GetWeapons', function()
-    return QBShared.Weapons
-end)
-
 -- Player
 
 exports('GetPlayerData', function(cb)
@@ -84,7 +58,7 @@ end
 exports('LoadModel', LoadModel)
 
 exports('SpawnPed', function(name, model, x, y, z, w)
-    if type(model) == 'string' then model = GetHashKey(model) end
+    if type(model) == 'string' then model = joaat(model) end
     LoadModel(model)
     QBCore.Peds[name] = CreatePed(model, x, y, z, w, true, true, 0, 0)
     Citizen.InvokeNative(0x283978A15512B2FE, QBCore.Peds[name], true)
@@ -232,12 +206,9 @@ exports('GetClosestObject', function(coords)
 end)
 
 exports('AttachProp', function(ped, model, boneId, x, y, z, xR, yR, zR, Vertex)
-    local modelHash = GetHashKey(model)
+    local modelHash = joaat(model)
     local bone = GetPedBoneIndex(ped, boneId)
-    RequestModel(modelHash)
-    while not HasModelLoaded(modelHash) do
-        Wait(0)
-    end
+    LoadModel(modelHash)
     local prop = CreateObject(modelHash, 1.0, 1.0, 1.0, 1, 1, 0)
     AttachEntityToEntity(prop, ped, bone, x, y, z, xR, yR, zR, 1, 1, 0, 1, not Vertex and 2 or 0, 1)
     SetModelAsNoLongerNeeded(modelHash)
@@ -247,7 +218,7 @@ end)
 -- Vehicle
 
 exports('SpawnVehicle', function(model, cb, coords, isnetworked)
-    local hash = GetHashKey(model)
+    local hash = joaat(model)
     local ped = PlayerPedId()
     if coords then
         coords = type(coords) == 'table' and vec3(coords.x, coords.y, coords.z) or coords
@@ -256,8 +227,7 @@ exports('SpawnVehicle', function(model, cb, coords, isnetworked)
     end
     local isnetworked = isnetworked or true
     if not IsModelInCdimage(hash) then return end
-    RequestModel(hash)
-    while not HasModelLoaded(hash) do Wait(10) end
+    LoadModel(hash)
     local veh = CreateVehicle(model, coords.x, coords.y, coords.z, coords.w, isnetworked, false)
     local netid = NetworkGetNetworkIdFromEntity(veh)
     SetNetworkIdExistsOnAllMachines(netid, true)
@@ -351,7 +321,7 @@ exports('Notify', Notify)
 
 -- Blip Functions
 exports('CreateBlip', function(uniqueId, label, x, y, z, sprite, scale, rotation, radius)
-    if type(sprite) == 'string' then sprite = GetHashKey(sprite) end
+    if type(sprite) == 'string' then sprite = joaat(sprite) end
     if radius then
         QBCore.Blips[uniqueId] = Citizen.InvokeNative(0x45F13B7E0A15C880, 1664425300, x, y, z, radius)
     else
