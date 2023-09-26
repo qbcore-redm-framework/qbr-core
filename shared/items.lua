@@ -353,7 +353,8 @@ QBShared.Items = {
         ['description'] = 'A bag filled with money'
     },
 
-    -- --HUNTING-- --['feather'] = {
+    -- --HUNTING-- --
+    ['feather'] = {
         ['name'] = 'feather',
         ['label'] = 'Feathers',
         ['weight'] = 100,
@@ -510,7 +511,8 @@ QBShared.Items = {
         ['description'] = 'Raw Bird Meat'
     },
 
-    --AMMO['ammo_repeater'] = {
+    --AMMO
+    ['ammo_repeater'] = {
         ['name'] = 'ammo_repeater',
         ['label'] = 'Ammo Repeater',
         ['weight'] = 200,
