@@ -646,19 +646,19 @@ local function PaycheckLoop()
                 local account = exports['qb-bossmenu']:GetAccount(Player.PlayerData.job.name)
                 if account ~= 0 then -- Checks if player is employed by a society
                     if account < payment then -- Checks if company has enough money to pay society
-                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('error.company_too_poor'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 9, Lang:t('error.company_too_poor'), 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
                     else
                         Player.Functions.AddMoney('bank', payment)
                         TriggerEvent('qb-bossmenu:server:removeAccountMoney', Player.PlayerData.job.name, payment)
-                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('info.received_paycheck', {value = payment}))
+                        TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 9, Lang:t('info.received_paycheck', {value = payment}))
                     end
                 else
                     Player.Functions.AddMoney('bank', payment)
-                    TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('info.received_paycheck', {value = payment}))
+                    TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 9, Lang:t('info.received_paycheck', {value = payment}))
                 end
             else
                 Player.Functions.AddMoney('bank', payment)
-                TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, Lang:t('info.received_paycheck', {value = payment}))
+                TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 9, Lang:t('info.received_paycheck', {value = payment}))
             end
         end
     end
