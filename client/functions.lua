@@ -311,7 +311,7 @@ function Notify(id, text, duration, subtext, dict, icon, color)
     }
 
     if not notifications[id] then
-        print('Invalid Notify ID')
+        print('Invalid Notify ID: ', id)
         return nil
     else
         return notifications[id]()
