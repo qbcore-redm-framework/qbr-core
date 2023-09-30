@@ -25,3 +25,16 @@ CreateThread(function()
         end
     end
 end)
+
+CreateThread(function ()
+    if QBConfig.Hud.HidePlayersCore then
+        for _, v in pairs(PlayersCore) do
+            Citizen.InvokeNative(0xC116E6DF68DCE667, v, 2)
+        end
+    end
+    if QBConfig.Hud.HideHorseCore then
+        for _, v in pairs(HorseCore) do
+            Citizen.InvokeNative(0xC116E6DF68DCE667, v, 2)
+        end
+    end
+end)
