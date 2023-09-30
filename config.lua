@@ -33,6 +33,10 @@ QBConfig.Player.Bloodtypes = {
     "O-",
 }
 
+QBConfig.Hud = {}
+QBConfig.Hud.HidePlayersCore = true
+QBConfig.Hud.HideHorseCore = false
+
 -- Left side is level right side xp needed, you just have to add the skill here and in the metadata in servers/player.lua
 -- You dont have to use this if you dont want to, just leave as is
 QBConfig.Levels = {
