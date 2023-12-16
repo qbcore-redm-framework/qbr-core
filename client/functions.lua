@@ -67,6 +67,7 @@ exports('SpawnPed', function(name, model, x, y, z, w)
     SetBlockingOfNonTemporaryEvents(QBCore.Peds[name], true)
     SetEntityCanBeDamagedByRelationshipGroup(QBCore.Peds[name], false, `PLAYER`)
     SetEntityAsMissionEntity(QBCore.Peds[name], true, true)
+    SetWeaponsNoAutoswap(true)
 end)
 
 exports('RemovePed', function(name)
