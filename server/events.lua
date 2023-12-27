@@ -101,33 +101,14 @@ AddEventHandler('playerConnecting', OnPlayerConnecting)
 
 RegisterNetEvent('QBCore:UpdatePlayer', function()
     local Player = GetPlayer(source)
-    if Player then
-        local newHunger = Player.PlayerData.metadata['hunger'] - QBConfig.Player.HungerRate
-        local newThirst = Player.PlayerData.metadata['thirst'] - QBConfig.Player.ThirstRate
-        if newHunger <= 0 then
-            newHunger = 0
-        end
-        if newThirst <= 0 then
-            newThirst = 0
-        end
-        Player.Functions.SetMetaData('thirst', newThirst)
-        Player.Functions.SetMetaData('hunger', newHunger)
-        TriggerClientEvent('hud:client:UpdateNeeds', source, newHunger, newThirst)
-        Player.Functions.Save()
-    end
+	if not Player then return end
+    Player.Functions.Save()
 end)
 
 RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
     local Player = GetPlayer(source)
-    if meta == 'hunger' or meta == 'thirst' then
-        if data > 100 then
-            data = 100
-        end
-    end
-    if Player then
-        Player.Functions.SetMetaData(meta, data)
-    end
-    TriggerClientEvent('hud:client:UpdateNeeds', source, Player.PlayerData.metadata['hunger'], Player.PlayerData.metadata['thirst'])
+    if not Player then return end
+    Player.Functions.SetMetaData(meta, data)
 end)
 
 RegisterNetEvent('QBCore:ToggleDuty', function()
