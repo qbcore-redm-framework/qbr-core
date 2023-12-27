@@ -107,7 +107,7 @@ end
 local function SavePlayer(source)
     local ped = GetPlayerPed(source)
     local pcoords = GetEntityCoords(ped)
-    local PlayerData = QBCore.Players[source].PlayerData
+    local PlayerData = QBCore.Players[source]?.PlayerData
     if PlayerData then
         MySQL.insert.await('INSERT INTO players (citizenid, cid, license, name, money, charinfo, job, gang, position, metadata) VALUES (:citizenid, :cid, :license, :name, :money, :charinfo, :job, :gang, :position, :metadata) ON DUPLICATE KEY UPDATE cid = :cid, name = :name, money = :money, charinfo = :charinfo, job = :job, gang = :gang, position = :position, metadata = :metadata', {
             citizenid = PlayerData.citizenid,
@@ -474,6 +474,7 @@ local function CheckPlayerData(source, PlayerData)
     PlayerData = PlayerData or {}
     PlayerData.source = source
     PlayerData.citizenid = PlayerData.citizenid or CreateCitizenId()
+	Player(source).state.cid = PlayerData.citizenid -- This Allows to Get CID on client without the need hit the server all the time
     PlayerData.license = PlayerData.license or GetPlayerIdentifierByType(source, 'license')
     PlayerData.name = GetPlayerName(source)
     PlayerData.cid = PlayerData.cid or 1
@@ -492,9 +493,6 @@ local function CheckPlayerData(source, PlayerData)
 
     -- Metadata
     PlayerData.metadata = PlayerData.metadata or {}
-    PlayerData.metadata['hunger'] = PlayerData.metadata['hunger'] or 100
-    PlayerData.metadata['thirst'] = PlayerData.metadata['thirst'] or 100
-    PlayerData.metadata['stress'] = PlayerData.metadata['stress'] or 0
     PlayerData.metadata['isdead'] = PlayerData.metadata['isdead'] or false
     PlayerData.metadata['inlaststand'] = PlayerData.metadata['inlaststand'] or false
     PlayerData.metadata['armor'] = PlayerData.metadata['armor'] or 0
