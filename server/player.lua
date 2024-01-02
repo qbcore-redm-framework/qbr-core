@@ -106,8 +106,9 @@ end
 
 local function SavePlayer(source)
     local ped = GetPlayerPed(source)
-    local pcoords = GetEntityCoords(ped)
-    local PlayerData = QBCore.Players[source].PlayerData
+    local pcoords = GetEntityCoords(ped)    
+    local playerData = QBCore.Players[source] and QBCore.Players[source].PlayerData
+    
     if PlayerData then
         MySQL.insert.await('INSERT INTO players (citizenid, cid, license, name, money, charinfo, job, gang, position, metadata) VALUES (:citizenid, :cid, :license, :name, :money, :charinfo, :job, :gang, :position, :metadata) ON DUPLICATE KEY UPDATE cid = :cid, name = :name, money = :money, charinfo = :charinfo, job = :job, gang = :gang, position = :position, metadata = :metadata', {
             citizenid = PlayerData.citizenid,
