@@ -1,5 +1,6 @@
-local isLoggedIn = false
-AddStateBagChangeHandler('isLoggedIn', nil, function(bagName, key, value)
+local sid, isLoggedIn = GetPlayerServerId(PlayerId())
+
+AddStateBagChangeHandler('isLoggedIn', ('player:%s'):format(sid), function(_, _, value)
     isLoggedIn = value
 end)
 
