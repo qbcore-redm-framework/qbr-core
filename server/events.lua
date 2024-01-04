@@ -27,14 +27,9 @@ end
 local function IsLicenseInUse(license)
     local players = GetPlayers()
     for _, player in pairs(players) do
-        local identifiers = GetPlayerIdentifiers(player)
-        for _, id in pairs(identifiers) do
-            if string.find(id, 'license') then
-                local playerLicense = id
-                if playerLicense == license then
-                    return true
-                end
-            end
+        local id = GetPlayerIdentifierByType(player, 'license')
+        if id == license then
+            return true
         end
     end
     return false
@@ -43,56 +38,32 @@ end
 -- Player Connecting
 
 local function OnPlayerConnecting(name, setKickReason, deferrals)
-    local player = source
-    local license
-    local identifiers = GetPlayerIdentifiers(player)
+    local src = source
     deferrals.defer()
-
-    -- mandatory wait!
+    if QBConfig.ServerClosed and not IsPlayerAceAllowed(src, 'whitelisted') then
+        return deferrals.done(QBConfig.ServerClosedReason)
+    end
     Wait(0)
-
-    if QBConfig.ServerClosed then
-        if not IsPlayerAceAllowed(player, 'whitelisted') then
-            deferrals.done(QBConfig.ServerClosedReason)
-        end
-    end
-
-    deferrals.update(string.format('Hello %s. Validating Your Rockstar License', name))
-
-    for _, v in pairs(identifiers) do
-        if string.find(v, 'license') then
-            license = v
-            break
-        end
-    end
-
-    -- mandatory wait!
-    Wait(2500)
-
-    deferrals.update(string.format('Hello %s. We are checking if you are banned.', name))
-
-    local isBanned, Reason = IsPlayerBanned(license)
-    local isLicenseAlreadyInUse = IsLicenseInUse(license)
-
-    Wait(2500)
-
-    deferrals.update(string.format('Welcome %s to {Server Name}.', name))
-
+    deferrals.update(string.format('Hello %s. Your license is being checked', name))
+    local license = GetPlayerIdentifierByType(src, 'license')
     if not license then
-        deferrals.done('No Valid Rockstar License Found')
-    elseif isBanned then
-        deferrals.done(Reason)
-    elseif isLicenseAlreadyInUse then
-        deferrals.done('Duplicate Rockstar License Found')
-    else
-        GlobalState['Count:Players'] = GetNumPlayerIndices() + 1
-        deferrals.done()
-        if QBConfig.UseConnectQueue then
-            Wait(1000)
-            TriggerEvent('connectqueue:playerConnect', name, setKickReason, deferrals)
-        end
+        return deferrals.done('No Valid Rockstar License Found')
+    elseif IsLicenseInUse(license) then
+        return deferrals.done('Duplicate Rockstar License Found')
     end
-    --Add any additional defferals you may need!
+    Wait(0)
+    deferrals.update(string.format('Hello %s. We are checking if you are banned.', name))
+    local success, isBanned, reason = pcall(IsPlayerBanned, license)
+    if not success then return deferrals.done('A database error occurred while connecting to the server.') end
+    if isBanned then return deferrals.done(reason) end
+    Wait(0)
+    deferrals.update(string.format('Welcome %s to {Server Name}.', name))
+	GlobalState['Count:Players'] = GetNumPlayerIndices() + 1
+    deferrals.done()
+	if QBConfig.UseConnectQueue then
+        Wait(1000)
+    	TriggerEvent('connectqueue:playerConnect', name, setKickReason, deferrals)
+	end
 end
 
 AddEventHandler('playerConnecting', OnPlayerConnecting)
@@ -101,33 +72,14 @@ AddEventHandler('playerConnecting', OnPlayerConnecting)
 
 RegisterNetEvent('QBCore:UpdatePlayer', function()
     local Player = GetPlayer(source)
-    if Player then
-        local newHunger = Player.PlayerData.metadata['hunger'] - QBConfig.Player.HungerRate
-        local newThirst = Player.PlayerData.metadata['thirst'] - QBConfig.Player.ThirstRate
-        if newHunger <= 0 then
-            newHunger = 0
-        end
-        if newThirst <= 0 then
-            newThirst = 0
-        end
-        Player.Functions.SetMetaData('thirst', newThirst)
-        Player.Functions.SetMetaData('hunger', newHunger)
-        TriggerClientEvent('hud:client:UpdateNeeds', source, newHunger, newThirst)
-        Player.Functions.Save()
-    end
+	if not Player then return end
+    Player.Functions.Save()
 end)
 
 RegisterNetEvent('QBCore:Server:SetMetaData', function(meta, data)
     local Player = GetPlayer(source)
-    if meta == 'hunger' or meta == 'thirst' then
-        if data > 100 then
-            data = 100
-        end
-    end
-    if Player then
-        Player.Functions.SetMetaData(meta, data)
-    end
-    TriggerClientEvent('hud:client:UpdateNeeds', source, Player.PlayerData.metadata['hunger'], Player.PlayerData.metadata['thirst'])
+    if not Player then return end
+    Player.Functions.SetMetaData(meta, data)
 end)
 
 RegisterNetEvent('QBCore:ToggleDuty', function()

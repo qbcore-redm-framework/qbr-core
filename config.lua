@@ -2,7 +2,6 @@ QBConfig = {}
 QBConfig.MaxPlayers = GetConvarInt('sv_maxclients', 48) -- Gets max players from config file, default 48
 QBConfig.DefaultSpawn = vector4(-1035.71, -2731.87, 12.86, 0.0)
 QBConfig.UpdateInterval = 5 -- how often to update player data in minutes
-QBConfig.StatusInterval = 5000 -- how often to check hunger/thirst status in ms
 QBConfig.EnablePVP = true -- Enable or disable pvp on the server (Ability to shoot other players)
 QBConfig.Discord = "" -- Discord invite link
 QBConfig.ServerClosed = false -- Set server closed (no one can join except people with ace permission 'qbadmin.join')
@@ -20,8 +19,6 @@ QBConfig.Player = {}
 QBConfig.Player.RevealMap = true
 QBConfig.Player.MaxWeight = 120000 -- Max weight a player can carry (currently 120kg, written in grams)
 QBConfig.Player.MaxInvSlots = 41 -- Max inventory slots for a player
-QBConfig.Player.HungerRate = 4.2 -- Rate at which hunger goes down.
-QBConfig.Player.ThirstRate = 3.8 -- Rate at which thirst goes down.
 QBConfig.Player.Bloodtypes = {
     "A+",
     "A-",
@@ -32,10 +29,6 @@ QBConfig.Player.Bloodtypes = {
     "O+",
     "O-",
 }
-
-QBConfig.Hud = {}
-QBConfig.Hud.HidePlayersCore = true
-QBConfig.Hud.HideHorseCore = false
 
 -- Left side is level right side xp needed, you just have to add the skill here and in the metadata in servers/player.lua
 -- You dont have to use this if you dont want to, just leave as is
